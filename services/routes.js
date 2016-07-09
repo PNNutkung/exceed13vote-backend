@@ -38,13 +38,14 @@ module.exports = (app, passport, express) => {
     });
 
     // route to authenticate user (POST http://localhost:8080/api/authenticate)
-    apiRoutes.post('/authenticate', (req, res) => {
+    apiRoutes.post('/login', (req, res) => {
         User.findOne({
             username: req.body.username
         }, (error, user) => {
             if (error) throw error;
             if (!user) {
                 res.send({
+                    status: 403,
                     success: false,
                     message: 'Authentication failed. User not found.'
                 });
@@ -53,11 +54,16 @@ module.exports = (app, passport, express) => {
                     if (isMatch && !error) {
                         var token = jwt.encode(user, config.secret);
                         res.json({
+                            status: 200,
                             success: true,
+                            username: user.username,
+                            group: user.group,
+                            quota: user.quota,
                             token: 'JWT ' + token
                         });
                     } else {
                         res.send({
+                            status: 403,
                             success: false,
                             message: 'Authentication failed. Wrong password.'
                         });
@@ -80,18 +86,24 @@ module.exports = (app, passport, express) => {
                 if(error) throw error;
                 if(!user) {
                     return res.status(403).send({
+                        status: 403,
                         success: false,
                         message: 'Authentication failed. User not found.'
                     });
                 } else {
                     res.json({
+                        status: 200,
                         success: true,
+                        username: user.username,
+                        group: user.group,
+                        quota: user.quota,
                         message: 'Welcome to website ' + user.username +'!'
                     });
                 }
             });
         } else {
             return res.status(403).send({
+                status: 403,
                 success: false,
                 message: 'No token provided.'
             });
