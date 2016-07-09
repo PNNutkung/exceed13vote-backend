@@ -10,7 +10,7 @@ module.exports = (app, passport, express) => {
 
     require('./user/userRoutes')(apiRoutes, passport, express, mongoose, getToken);
 
-    require('./group/groupRoutes')(apiRoutes, express, mongoose);
+    require('./group/groupRoutes')(apiRoutes);
 
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);

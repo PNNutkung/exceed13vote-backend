@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Group = require('./group');
 
 var ProjectSchema = new Schema({
     name: {
@@ -13,22 +14,17 @@ var ProjectSchema = new Schema({
     },
     group_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Group'
+        ref: 'Group',
+        unique: true,
+        required: true
     },
-    contents: [
-        {
-            header: {
-                type: String,
-                required: true
-            },
-            desc: {
-                type: String,
-                required: true
-            }
-        }
-    ],
-    vote_id: {
-        type: String
+    header: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
     }
 });
 

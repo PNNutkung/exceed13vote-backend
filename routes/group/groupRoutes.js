@@ -1,5 +1,5 @@
 var Group = require('./../../app/models/group')
-module.exports = (apiRoutes, express, mongoose) => {
+module.exports = (apiRoutes) => {
     apiRoutes.get('/groups', (req, res) => {
         Group
         .find({
