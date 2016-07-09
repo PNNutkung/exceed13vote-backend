@@ -1,0 +1,16 @@
+{
+  "name": "exceed13vote-backend",
+  "version": "1.0.0",
+  "description": "Backend side for exceed 13 vote website.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "PNNutkung",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.14.0",
+    "mongodb": "^2.2.0",
+    "morgan": "^1.7.0"
+  }
+}
