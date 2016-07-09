@@ -42,19 +42,19 @@ module.exports = (app, passport, express, bodyParser) => {
         User.findOne({
             username: req.body.username
         }, (error, user) => {
-            if(error) throw error;
-            if(!user) {
+            if (error) throw error;
+            if (!user) {
                 res.send({
                     success: false,
                     message: 'Authentication failed. User not found.'
                 });
             } else {
                 user.comparePassword(req.body.password, (error, isMatch) => {
-                    if(isMatch && !error) {
+                    if (isMatch && !error) {
                         var token = jwt.encode(user, config.secret);
                         res.json({
                             success: true,
-                            token: 'JWT' + token
+                            token: 'JWT ' + token
                         });
                     } else {
                         res.send({
@@ -67,6 +67,50 @@ module.exports = (app, passport, express, bodyParser) => {
         });
     });
 
+    // route to a restricted info (GET http://localhost:8080/api/userinfo)
+    apiRoutes.get('/userinfo', passport.authenticate('jwt', {
+        session: false
+    }), (req, res) => {
+        var token = getToken(req.headers);
+        if(token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                username: decoded.username
+            }, (error, user) => {
+                if(error) throw error;
+                if(!user) {
+                    return res.status(403).send({
+                        success: false,
+                        message: 'Authentication failed. User not found.'
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        message: 'Welcome to website ' + user.username +'!'
+                    });
+                }
+            });
+        } else {
+            return res.status(403).send({
+                success: false,
+                message: 'No token provided.'
+            });
+        }
+    });
+
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }
+
+getToken = (headers) => {
+    if(headers && headers.authorization) {
+        var parted = headers.authorization.split(' ');
+        if(parted.length === 2) {
+            return parted[1];
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+};
