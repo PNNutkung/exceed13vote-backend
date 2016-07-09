@@ -12,6 +12,8 @@ module.exports = (app, passport, express) => {
 
     require('./group/groupRoutes')(apiRoutes);
 
+    require('./project/projectRoutes')(apiRoutes, mongoose, passport);
+
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }

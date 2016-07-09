@@ -1,4 +1,4 @@
-var Group = require('./../../app/models/group')
+var Group = require('./../../app/models/group');
 module.exports = (apiRoutes) => {
     apiRoutes.get('/groups', (req, res) => {
         Group

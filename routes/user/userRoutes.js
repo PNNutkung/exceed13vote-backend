@@ -8,6 +8,7 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
     apiRoutes.post('/signup', (req, res) => {
         if (!req.body.username || !req.body.password) {
             res.json({
+                status: 403,
                 success: false,
                 message: 'Please pass name and password.'
             });
@@ -21,11 +22,13 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
                 if (error) {
                     console.log(error);
                     return res.json({
+                        status: 403,
                         success: false,
                         message: 'Username already exists.'
                     });
                 }
                 res.json({
+                    status: 200,
                     success: true,
                     message: 'Successful created new user.'
                 });
@@ -55,6 +58,13 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
                             })
                             .populate('group_id')
                             .exec((error, user) => {
+                                if(error) {
+                                    res.json({
+                                        status: 403,
+                                        success: false,
+                                        message: 'Cannot found user.'
+                                    });
+                                }
                                 res.json({
                                     status: 200,
                                     success: true,
