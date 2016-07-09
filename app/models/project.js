@@ -2,11 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ProjectSchema = new Schema({
-    id: {
-        type: Number,
-        unique: true,
-        required: true
-    },
     name: {
         type: String,
         unique: true,
@@ -16,9 +11,22 @@ var ProjectSchema = new Schema({
         type: String,
         required: true
     },
-    contents: {
-
+    group_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
     },
+    contents: [
+        {
+            header: {
+                type: String,
+                required: true
+            },
+            desc: {
+                type: String,
+                required: true
+            }
+        }
+    ],
     vote_id: {
         type: String
     }

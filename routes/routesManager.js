@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var config = require('../config/database');
-var User = require('../app/models/user');
 
 module.exports = (app, passport, express) => {
     mongoose.connect(config.database);

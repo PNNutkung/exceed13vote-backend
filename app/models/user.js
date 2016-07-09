@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
-
+var Group = require('./group');
 // set up a mongoose model
 var UserSchema = new Schema({
     username: {
@@ -12,6 +12,27 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    group_id: {
+        type: Schema.ObjectId,
+        ref: 'Group',
+        required: true
+    },
+    best_hardware_quota: {
+        type: Number,
+        default: 1
+    },
+    best_software_quota: {
+        type: Number,
+        default: 1
+    },
+    popular_vote_quota: {
+        type: Number,
+        default: 1
+    },
+    top_rated_quota: {
+        type: Number,
+        default: 1
     }
 });
 

@@ -14,7 +14,8 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
         } else {
             var newUser = new User({
                 username: req.body.username,
-                password: req.body.password
+                password: req.body.password,
+                group_id: mongoose.Types.ObjectId(req.body.group_id)
             });
             newUser.save((error) => {
                 if (error) {
@@ -48,14 +49,24 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
                 user.comparePassword(req.body.password, (error, isMatch) => {
                     if (isMatch && !error) {
                         var token = jwt.encode(user, config.secret);
-                        res.json({
-                            status: 200,
-                            success: true,
-                            username: user.username,
-                            /*group: user.group,
-                            quota: user.quota,*/
-                            token: 'JWT ' + token
-                        });
+                        User
+                            .findOne({
+                                username: 'aaa'
+                            })
+                            .populate('group_id')
+                            .exec((error, user) => {
+                                res.json({
+                                    status: 200,
+                                    success: true,
+                                    username: user.username,
+                                    group_name: user.group_id.group_name,
+                                    top_rated_quota: user.top_rated_quota,
+                                    popular_vote_quota: user.popular_vote,
+                                    best_software_quota: user.best_software_quota,
+                                    best_hardware_quota: user.best_hardware_quota,
+                                    token: 'JWT ' + token
+                                })
+                            });
                     } else {
                         res.send({
                             status: 403,
@@ -90,8 +101,11 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
                         status: 200,
                         success: true,
                         username: user.username,
-                        /*group: user.group,
-                        quota: user.quota,*/
+                        group_name: user.group_id.group_name,
+                        top_rated_quota: user.top_rated_quota,
+                        popular_vote_quota: user.popular_vote,
+                        best_software_quota: user.best_software_quota,
+                        best_hardware_quota: user.best_hardware_quota,
                         message: 'Welcome to website ' + user.username + '!'
                     });
                 }
