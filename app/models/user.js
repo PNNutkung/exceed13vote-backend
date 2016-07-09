@@ -18,21 +18,9 @@ var UserSchema = new Schema({
         ref: 'Group',
         required: true
     },
-    best_hardware_quota: {
-        type: Number,
-        default: 1
-    },
-    best_software_quota: {
-        type: Number,
-        default: 1
-    },
-    popular_vote_quota: {
-        type: Number,
-        default: 1
-    },
-    top_rated_quota: {
-        type: Number,
-        default: 1
+    vote: {
+        type: Array,
+        default: [1,1,1,1]
     }
 });
 

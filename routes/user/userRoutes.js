@@ -60,10 +60,7 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
                                     success: true,
                                     username: user.username,
                                     group_name: user.group_id.group_name,
-                                    top_rated_quota: user.top_rated_quota,
-                                    popular_vote_quota: user.popular_vote,
-                                    best_software_quota: user.best_software_quota,
-                                    best_hardware_quota: user.best_hardware_quota,
+                                    vote: user.vote,
                                     token: 'JWT ' + token
                                 })
                             });

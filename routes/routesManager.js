@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var config = require('../config/database');
+var jwt = require('jwt-simple');
 
 module.exports = (app, passport, express) => {
     mongoose.connect(config.database);
@@ -8,6 +9,8 @@ module.exports = (app, passport, express) => {
     var apiRoutes = express.Router();
 
     require('./user/userRoutes')(apiRoutes, passport, express, mongoose, getToken);
+
+    require('./group/groupRoutes')(apiRoutes, express, mongoose);
 
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
