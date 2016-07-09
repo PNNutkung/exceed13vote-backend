@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var config = require('../config/database');
 var User = require('../app/models/user');
 var jwt = require('jwt-simple');
-module.exports = (app, passport, express, bodyParser) => {
+module.exports = (app, passport, express) => {
     mongoose.connect(config.database);
     require('../config/passport')(passport);
 
