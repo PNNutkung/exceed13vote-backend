@@ -22,4 +22,4 @@ app.get('/', (req, res) => {
 app.listen(port);
 console.log('There will be dragons: http://localhost:' + port);
 
-require('./services/routes')(app, passport, express);
+require('./routes/routesManager')(app, passport, express);
