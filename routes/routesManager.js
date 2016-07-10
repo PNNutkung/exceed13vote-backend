@@ -9,7 +9,7 @@ module.exports = (app, passport, express) => {
     // bundle our routes
     var apiRoutes = express.Router();
 
-    require('./user/userRoutes')(apiRoutes, passport, express, mongoose, getToken);
+    require('./user/userRoutes')(apiRoutes, passport, mongoose);
 
     require('./group/groupRoutes')(apiRoutes);
 

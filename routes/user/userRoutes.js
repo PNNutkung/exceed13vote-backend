@@ -2,7 +2,7 @@ var jwt = require('jwt-simple');
 var config = require('./../../config/database');
 var User = require('./../../app/models/user');
 
-module.exports = (apiRoutes, passport, express, mongoose, verifyAuthen) => {
+module.exports = (apiRoutes, passport, mongoose) => {
 
     // create a new user account (POST http://localhost:8080/api/signup)
     apiRoutes.post('/signup', (req, res) => {
@@ -36,7 +36,7 @@ module.exports = (apiRoutes, passport, express, mongoose, verifyAuthen) => {
         }
     });
 
-    // route to authenticate user (POST http://localhost:8080/api/authenticate)
+    // route to authenticate user (POST http://localhost:8080/api/login)
     apiRoutes.post('/login', (req, res) => {
         User.findOne({
             username: req.body.username
@@ -54,7 +54,7 @@ module.exports = (apiRoutes, passport, express, mongoose, verifyAuthen) => {
                         var token = jwt.encode(user, config.secret);
                         User
                             .findOne({
-                                username: 'aaa'
+                                username: user.username
                             })
                             .populate('group_id')
                             .exec((error, user) => {
