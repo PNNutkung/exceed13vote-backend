@@ -41,7 +41,7 @@ var isAuthenticated = function(req, res, next) {
             return res.json({
                 status: 403,
                 success: false,
-                message: 'Authentication failed. Fake Token'
+                message: 'Authentication failed. Use fake token!'
             });
         }
         User.findOne({
@@ -62,7 +62,7 @@ var isAuthenticated = function(req, res, next) {
         return res.json({
             status: 403,
             success: false,
-            message: 'Permission denied.'
+            message: 'Please login first.'
         });
     }
 };

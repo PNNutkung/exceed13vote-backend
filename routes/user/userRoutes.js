@@ -71,7 +71,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
                                     username: user.username,
                                     group_name: user.group_id.group_name,
                                     vote: user.vote,
-                                    token: 'JWT ' + token
+                                    token: 'eXceed13vote ' + token
                                 })
                             });
                     } else {

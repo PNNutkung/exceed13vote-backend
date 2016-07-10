@@ -33,7 +33,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated) => {
         }
     });
 
-    apiRoutes.get('/project', isAuthenticated, (req, res) => {
+    apiRoutes.get('/project', (req, res) => {
         Project
             .find({
 
