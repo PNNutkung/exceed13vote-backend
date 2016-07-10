@@ -2,7 +2,7 @@ var jwt = require('jwt-simple');
 var config = require('./../../config/database');
 var User = require('./../../app/models/user');
 
-module.exports = (apiRoutes, passport, express, mongoose) => {
+module.exports = (apiRoutes, passport, express, mongoose, verifyAuthen) => {
 
     // create a new user account (POST http://localhost:8080/api/signup)
     apiRoutes.post('/signup', (req, res) => {
@@ -84,45 +84,5 @@ module.exports = (apiRoutes, passport, express, mongoose) => {
                 });
             }
         });
-    });
-
-    // route to a restricted info (GET http://localhost:8080/api/userinfo)
-    apiRoutes.get('/userinfo', passport.authenticate('jwt', {
-        session: false
-    }), (req, res) => {
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                username: decoded.username
-            }, (error, user) => {
-                if (error) throw error;
-                if (!user) {
-                    return res.status(403).send({
-                        status: 403,
-                        success: false,
-                        message: 'Authentication failed. User not found.'
-                    });
-                } else {
-                    res.json({
-                        status: 200,
-                        success: true,
-                        username: user.username,
-                        group_name: user.group_id.group_name,
-                        top_rated_quota: user.top_rated_quota,
-                        popular_vote_quota: user.popular_vote,
-                        best_software_quota: user.best_software_quota,
-                        best_hardware_quota: user.best_hardware_quota,
-                        message: 'Welcome to website ' + user.username + '!'
-                    });
-                }
-            });
-        } else {
-            return res.status(403).send({
-                status: 403,
-                success: false,
-                message: 'No token provided.'
-            });
-        }
     });
 };

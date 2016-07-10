@@ -1,11 +1,11 @@
 var Project = require('./../../app/models/project');
-module.exports = (apiRoutes, mongoose) => {
-    apiRoutes.post('/project', (req, res) => {
-        if(!req.body.name || !req.body.image_url || !req.body.group_id || !req.body.header || !req.body.content) {
+module.exports = (apiRoutes, mongoose, isAuthenticated) => {
+    apiRoutes.post('/project', isAuthenticated, (req, res) => {
+        if (!req.body.name || !req.body.image_url || !req.body.group_id || !req.body.header || !req.body.content) {
             res.json({
                 status: 403,
                 success: false,
-                message: 'Please pass all require data.'
+                message: 'Please pass all required data.'
             });
         } else {
             var newProject = new Project({
@@ -15,8 +15,8 @@ module.exports = (apiRoutes, mongoose) => {
                 header: req.body.header,
                 content: req.body.content
             });
-            newProject.save( (error) => {
-                if(error) {
+            newProject.save((error) => {
+                if (error) {
                     console.log(error);
                     return res.json({
                         status: 403,
@@ -33,18 +33,18 @@ module.exports = (apiRoutes, mongoose) => {
         }
     });
 
-    apiRoutes.get('/project', (req, res) => {
+    apiRoutes.get('/project', isAuthenticated, (req, res) => {
         Project
-        .find({
+            .find({
 
-        })
-        .populate('group_id')
-        .exec((error, projects) => {
-            res.json({
-                status: 200,
-                success: true,
-                projects: projects
+            })
+            .populate('group_id')
+            .exec((error, projects) => {
+                res.json({
+                    status: 200,
+                    success: true,
+                    projects: projects
+                });
             });
-        });
     });
 };
