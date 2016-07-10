@@ -1,6 +1,6 @@
 {
   "name": "exceed13vote-backend",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Backend side for exceed 13 vote website.",
   "main": "server.js",
   "scripts": {

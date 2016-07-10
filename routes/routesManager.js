@@ -35,13 +35,21 @@ var getToken = (headers) => {
 var isAuthenticated = function(req, res, next) {
     var token = getToken(req.headers);
     if (token) {
-        var decoded = jwt.decode(token, config.secret);
+        try {
+            var decoded = jwt.decode(token, config.secret);
+        } catch (e) {
+            return res.json({
+                status: 403,
+                success: false,
+                message: 'Authentication failed. Fake Token'
+            });
+        }
         User.findOne({
             username: decoded.username
         }, (error, user) => {
             if (error) throw error;
             if (!user) {
-                res.send({
+                return res.json({
                     status: 403,
                     success: false,
                     message: 'Authentication failed. User not found.'
@@ -51,7 +59,7 @@ var isAuthenticated = function(req, res, next) {
             }
         });
     } else {
-        res.send({
+        return res.json({
             status: 403,
             success: false,
             message: 'Permission denied.'
