@@ -1,22 +1,21 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Group = require('./group');
+var User = require('./user');
 
 var VoteSchema = new Schema({
-    id: {
-        type: Number,
-        unique: true,
-        required: true
+    vote_user: {
+        type: Schema.ObjectId,
+        ref: 'User'
     },
-    best_hardware: {
-        type: Number
+    vote_catagory: {
+        type: String
     },
-    best_software: {
-        type: Number
+    group: {
+        type: Schema.ObjectId,
+        ref: 'Group'
     },
-    popular_vote: {
-        type: Number
-    },
-    top_rated: {
+    score: {
         type: Number
     }
 });
