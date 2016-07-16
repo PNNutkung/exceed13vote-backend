@@ -15,6 +15,7 @@ module.exports = (app, passport, express) => {
 
     require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated);
 
+    require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }
@@ -22,7 +23,7 @@ module.exports = (app, passport, express) => {
 var getToken = (headers) => {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
-        if (parted.length === 2) {
+        if (parted.length === 3) {
             return parted[1];
         } else {
             return null;
