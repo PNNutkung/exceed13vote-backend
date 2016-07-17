@@ -73,7 +73,7 @@ URL enconded
 ---
 
 ## Show All Projects
-Suffix URL: /api/poject
+Suffix URL: /api/poject  
 Method: **GET**  
 
 ## Output: JSON
@@ -148,7 +148,7 @@ Method: **GET**
 ---
 
 ## Vote Checker
-Suffix URL: /api/vote/check_voted
+Suffix URL: /api/vote/check_voted  
 Method: **POST**  
 URL enconded
 
@@ -177,7 +177,7 @@ URL enconded
 ---
 
 ## Vote
-Suffix URL: /api/vote/
+Suffix URL: /api/vote/  
 Method: **POST**  
 URL enconded
 
@@ -205,7 +205,7 @@ URL enconded
 ---
 
 ## Vote Average
-Suffix URL: /api/vote/average
+Suffix URL: /api/vote/average  
 Method: **POST**  
 URL enconded
 
