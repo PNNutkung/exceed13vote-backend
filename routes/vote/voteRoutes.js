@@ -58,7 +58,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     return res.json({
                         status: 201,
                         success: false,
-                        message: 'This category has been voted.'
+                        message: 'You have voted already.'
                     });
                 }
             }
