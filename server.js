@@ -20,6 +20,6 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port);
-console.log('There will be dragons: http://localhost:' + port);
+console.log('eXceed13vote online @ http://localhost:' + port);
 
 require('./routes/routesManager')(app, passport, express);
