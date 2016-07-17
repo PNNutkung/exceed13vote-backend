@@ -8,7 +8,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
     apiRoutes.post('/signup', (req, res) => {
         if (!req.body.username || !req.body.password) {
             res.json({
-                status: 403,
+                status: 202,
                 success: false,
                 message: 'Please pass name and password.'
             });
@@ -22,7 +22,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
                 if (error) {
                     console.log(error);
                     return res.json({
-                        status: 403,
+                        status: 203,
                         success: false,
                         message: 'Username already exists.'
                     });
@@ -60,7 +60,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
                             .exec((error, user) => {
                                 if(error) {
                                     res.json({
-                                        status: 403,
+                                        status: 201,
                                         success: false,
                                         message: 'Cannot found user.'
                                     });
@@ -76,7 +76,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
                             });
                     } else {
                         res.send({
-                            status: 403,
+                            status: 201,
                             success: false,
                             message: 'Authentication failed. Wrong password.'
                         });

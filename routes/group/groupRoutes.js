@@ -7,7 +7,11 @@ module.exports = (apiRoutes) => {
         },
         (error, groups) => {
             if(error) throw error;
-            res.json(groups);
+            res.json({
+                status: 200,
+                success: true,
+                groups: groups
+            });
         });
     });
 };

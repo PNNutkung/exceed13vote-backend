@@ -18,7 +18,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated) => {
             if (error) throw error;
             if(!user) {
                 return res.json({
-                    status: 403,
+                    status: 201,
                     success: false,
                     message: 'Vote failed, User not found.'
                 });
@@ -34,15 +34,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated) => {
 }
 
 var decodeUsername = (headers) => {
-    if (headers && headers.authorization) {
-        var parted = headers.authorization.split(' ');
-        if (parted.length === 3) {
-            var decoded = jwt.decode(parted[1], config.secret);
-            return decoded.username;
-        } else {
-            return null;
-        }
-    } else {
-        return null;
-    }
+    var parted = headers.authorization.split(' ');
+    var decoded = jwt.decode(parted[1], config.secret);
+    return decoded.username;
 };

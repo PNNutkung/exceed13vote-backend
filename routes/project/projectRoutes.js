@@ -3,7 +3,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated) => {
     apiRoutes.post('/project', isAuthenticated, (req, res) => {
         if (!req.body.name || !req.body.image_url || !req.body.group_id || !req.body.header || !req.body.content) {
             res.json({
-                status: 403,
+                status: 202,
                 success: false,
                 message: 'Please pass all required data.'
             });
@@ -19,7 +19,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated) => {
                 if (error) {
                     console.log(error);
                     return res.json({
-                        status: 403,
+                        status: 203,
                         success: false,
                         message: 'Project already exists.'
                     });
