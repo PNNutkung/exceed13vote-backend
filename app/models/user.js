@@ -17,22 +17,6 @@ var UserSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Group',
         required: true
-    },
-    vote_hardware: {
-        type: Number,
-        default: 1
-    },
-    vote_software: {
-        type: Number,
-        default: 1
-    },
-    vote_popular: {
-        type: Number,
-        default: 1
-    },
-    vote_top_rate: {
-        type: Number,
-        default: 1
     }
 });
 

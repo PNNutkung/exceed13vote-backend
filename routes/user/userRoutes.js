@@ -70,10 +70,6 @@ module.exports = (apiRoutes, passport, mongoose) => {
                                     success: true,
                                     username: user.username,
                                     group: user.group.group_name,
-                                    vote: [user.vote_hardware,
-                                            user.vote_software,
-                                            user.vote_popular,
-                                            user.vote_top_rate],
                                     token: 'eXceed13vote ' + token + ' 20160729'
                                 })
                             });

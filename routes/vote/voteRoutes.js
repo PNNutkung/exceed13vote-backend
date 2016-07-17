@@ -9,10 +9,10 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
         User.findOne({
             username: tokenUsername
         }, (error, user) => {
-            if(error) throw error;
+            if (error) throw error;
             Vote.find({
-                vote_category: req.body.category
-            })
+                    vote_category: req.body.category
+                })
                 .where('vote_user').equals(mongoose.Types.ObjectId(user._id))
                 .where('project').equals(mongoose.Types.ObjectId(req.body.project_id))
                 .populate({
@@ -22,7 +22,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     }
                 })
                 .exec((error, vote) => {
-                    if(error) throw error;
+                    if (error) throw error;
                     return res.json({
                         status: 200,
                         success: true,
@@ -48,7 +48,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                 return res.json({
                     status: 200,
                     success: true,
-                    average: votes.length === 0 ? 0:total/votes.length
+                    average: votes.length === 0 ? 0 : total / votes.length
                 });
             });
     });
@@ -66,71 +66,27 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     message: 'Vote failed, User not found.'
                 });
             } else {
-                if (userVoteVerify(req.body, user)) {
-                    var newVote = new Vote({
-                        vote_user: mongoose.Types.ObjectId(user._id),
-                        vote_category: req.body.category,
-                        project: mongoose.Types.ObjectId(req.body.project),
-                        score: req.body.score
-                    });
-                    updateUserVote(req.body, user);
-                    newVote.save((error) => {
-                        if (error) {
-                            return res.json({
-                                status: 201,
-                                success: false,
-                                message: 'Vote failed.'
-                            });
-                        }
+                var newVote = new Vote({
+                    vote_user: mongoose.Types.ObjectId(user._id),
+                    vote_category: req.body.category,
+                    project: mongoose.Types.ObjectId(req.body.project),
+                    score: req.body.score
+                });
+                newVote.save((error) => {
+                    if (error) {
                         return res.json({
-                            status: 200,
-                            success: true,
-                            message: 'Vote successfully.'
+                            status: 201,
+                            success: false,
+                            message: 'Vote failed.'
                         });
-                    });
-                } else {
+                    }
                     return res.json({
-                        status: 201,
-                        success: false,
-                        message: 'You have voted already.'
+                        status: 200,
+                        success: true,
+                        message: 'Vote successfully.'
                     });
-                }
+                });
             }
         });
     });
-}
-
-var userVoteVerify = (body, user) => {
-    var voteType = body.category;
-    switch (voteType) {
-        case 'best_of_hardware':
-            return user.vote_hardware === 1 ? true : false;
-        case 'best_of_software':
-            return user.vote_software === 1 ? true : false;
-        case 'popular':
-            return user.vote_popular === 1 ? true : false;
-        case 'top_rated':
-            user.vote_top_rate === 1 ? true : false;
-        default:
-            return false;
-    }
-};
-
-var updateUserVote = (body, user) => {
-    var voteType = body.category;
-    switch (voteType) {
-        case 'best_of_hardware':
-            user.vote_hardware = 0;
-            break;
-        case 'best_of_software':
-            user.vote_software = 0;
-            break;
-        case 'popular':
-            user.vote_popular = 0;
-            break;
-        case 'top_rated':
-            user.vote_top_rate = 0;
-            break;
-    }
-    user.save();
 }
