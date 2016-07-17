@@ -8,7 +8,7 @@ var VoteSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     },
-    vote_catagory: {
+    vote_category: {
         type: String
     },
     group: {

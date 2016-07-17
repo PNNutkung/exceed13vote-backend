@@ -5,9 +5,17 @@ var jwt = require('jwt-simple');
 
 module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated) => {
     apiRoutes.get('/vote', (req, res) => {
-        res.json({
-            vote: 'hello it\'s me'
-        });
+        Vote.find({})
+            .populate('vote_user')
+            .populate('group')
+            .exec((error, votes) => {
+                if (error) throw error;
+                res.json({
+                    status: 200,
+                    success: true,
+                    votes: votes
+                })
+            });
     });
 
     apiRoutes.post('/vote', isAuthenticated, (req, res) => {
@@ -16,17 +24,33 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated) => {
             username: tokenUsername
         }, (error, user) => {
             if (error) throw error;
-            if(!user) {
+            if (!user) {
                 return res.json({
                     status: 201,
                     success: false,
                     message: 'Vote failed, User not found.'
                 });
             } else {
-                return res.json({
-                    status: 200,
-                    success: true,
-                    msssage: user.username
+                var newVote = new Vote({
+                    vote_user: mongoose.Types.ObjectId(user._id),
+                    vote_category: req.body.category,
+                    group: mongoose.Types.ObjectId(req.body.group_id),
+                    score: req.body.score
+                });
+                newVote.save((error) => {
+                    if (error) {
+                        console.log(error);
+                        return res.json({
+                            status: 201,
+                            success: false,
+                            message: 'Vote failed.'
+                        });
+                    }
+                    res.json({
+                        status: 200,
+                        success: true,
+                        message: 'Vote successfully.'
+                    });
                 });
             }
         });

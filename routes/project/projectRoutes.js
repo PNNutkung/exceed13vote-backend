@@ -35,11 +35,10 @@ module.exports = (apiRoutes, mongoose, isAuthenticated) => {
 
     apiRoutes.get('/project', (req, res) => {
         Project
-            .find({
-
-            })
+            .find({})
             .populate('group_id')
             .exec((error, projects) => {
+                if (error) throw error;
                 res.json({
                     status: 200,
                     success: true,
