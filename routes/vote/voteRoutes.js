@@ -3,11 +3,11 @@ var User = require('./../../app/models/user');
 var config = require('./../../config/database');
 var jwt = require('jwt-simple');
 
-module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated) => {
+module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
     apiRoutes.get('/vote', (req, res) => {
         Vote.find({})
             .populate('vote_user')
-            .populate('group')
+            .populate('project')
             .exec((error, votes) => {
                 if (error) throw error;
                 res.json({
@@ -31,34 +31,72 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated) => {
                     message: 'Vote failed, User not found.'
                 });
             } else {
-                var newVote = new Vote({
-                    vote_user: mongoose.Types.ObjectId(user._id),
-                    vote_category: req.body.category,
-                    group: mongoose.Types.ObjectId(req.body.group_id),
-                    score: req.body.score
-                });
-                newVote.save((error) => {
-                    if (error) {
-                        console.log(error);
-                        return res.json({
-                            status: 201,
-                            success: false,
-                            message: 'Vote failed.'
-                        });
-                    }
-                    res.json({
-                        status: 200,
-                        success: true,
-                        message: 'Vote successfully.'
+                if (userVoteVerify(req.body, user)) {
+                    var newVote = new Vote({
+                        vote_user: mongoose.Types.ObjectId(user._id),
+                        vote_category: req.body.category,
+                        project: mongoose.Types.ObjectId(req.body.project),
+                        score: req.body.score
                     });
-                });
+                    updateUserVote(req.body, user);
+                    newVote.save((error) => {
+                        if (error) {
+                            console.log(error);
+                            return res.json({
+                                status: 201,
+                                success: false,
+                                message: 'Vote failed.'
+                            });
+                        }
+                        return res.json({
+                            status: 200,
+                            success: true,
+                            message: 'Vote successfully.'
+                        });
+                    });
+                } else {
+                    return res.json({
+                        status: 201,
+                        success: false,
+                        message: 'This category has been voted.'
+                    });
+                }
             }
         });
     });
 }
 
-var decodeUsername = (headers) => {
-    var parted = headers.authorization.split(' ');
-    var decoded = jwt.decode(parted[1], config.secret);
-    return decoded.username;
+var userVoteVerify = (body, user) => {
+    var voteType = body.category;
+    switch (voteType) {
+        case 'best_of_hardware':
+            return user.vote_hardware === 1 ? true : false;
+        case 'best_of_software':
+            return user.vote_software === 1 ? true : false;
+        case 'popular':
+            return user.vote_popular === 1 ? true : false;
+        case 'top_rated':
+            user.vote_top_rate === 1 ? true : false;
+        default:
+            return false;
+    }
 };
+
+var updateUserVote = (body, user) => {
+    var voteType = body.category;
+    switch (voteType) {
+        case 'best_of_hardware':
+            user.vote_hardware = 0;
+            break;
+        case 'best_of_software':
+            user.vote_software = 0;
+            break;
+        case 'popular':
+            user.vote_popular = 0;
+            break;
+        case 'top_rated':
+            user.vote_top_rate = 0;
+            break;
+    }
+    user.save();
+}

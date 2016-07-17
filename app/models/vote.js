@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Group = require('./group');
+var Project = require('./project');
 var User = require('./user');
 
 var VoteSchema = new Schema({
@@ -11,9 +11,9 @@ var VoteSchema = new Schema({
     vote_category: {
         type: String
     },
-    group: {
+    project: {
         type: Schema.ObjectId,
-        ref: 'Group'
+        ref: 'Project'
     },
     score: {
         type: Number

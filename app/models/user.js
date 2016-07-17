@@ -13,14 +13,26 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
-    group_id: {
+    group: {
         type: Schema.ObjectId,
         ref: 'Group',
         required: true
     },
-    vote: {
-        type: Array,
-        default: [1,1,1,1]
+    vote_hardware: {
+        type: Number,
+        default: 1
+    },
+    vote_software: {
+        type: Number,
+        default: 1
+    },
+    vote_popular: {
+        type: Number,
+        default: 1
+    },
+    vote_top_rate: {
+        type: Number,
+        default: 1
     }
 });
 

@@ -12,7 +12,7 @@ var ProjectSchema = new Schema({
         type: String,
         required: true
     },
-    group_id: {
+    group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
         unique: true,

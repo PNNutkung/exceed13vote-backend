@@ -16,7 +16,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
             var newUser = new User({
                 username: req.body.username,
                 password: req.body.password,
-                group_id: mongoose.Types.ObjectId(req.body.group_id)
+                group: mongoose.Types.ObjectId(req.body.group)
             });
             newUser.save((error) => {
                 if (error) {
@@ -56,7 +56,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
                             .findOne({
                                 username: user.username
                             })
-                            .populate('group_id')
+                            .populate('group')
                             .exec((error, user) => {
                                 if(error) {
                                     res.json({
@@ -69,8 +69,11 @@ module.exports = (apiRoutes, passport, mongoose) => {
                                     status: 200,
                                     success: true,
                                     username: user.username,
-                                    group_name: user.group_id.group_name,
-                                    vote: user.vote,
+                                    group: user.group.group_name,
+                                    vote: [user.vote_hardware,
+                                            user.vote_software,
+                                            user.vote_popular,
+                                            user.vote_top_rate],
                                     token: 'eXceed13vote ' + token + ' 20160729'
                                 })
                             });

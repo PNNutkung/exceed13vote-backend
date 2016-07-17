@@ -1,34 +1,52 @@
 var Project = require('./../../app/models/project');
-module.exports = (apiRoutes, mongoose, isAuthenticated) => {
+var User = require('./../../app/models/user');
+module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
     apiRoutes.post('/project', isAuthenticated, (req, res) => {
-        if (!req.body.name || !req.body.image_url || !req.body.group_id || !req.body.header || !req.body.content) {
+        if (!req.body.name || !req.body.image_url || !req.body.header || !req.body.content) {
             res.json({
                 status: 202,
                 success: false,
                 message: 'Please pass all required data.'
             });
         } else {
-            var newProject = new Project({
-                name: req.body.name,
-                image_url: req.body.image_url,
-                group_id: mongoose.Types.ObjectId(req.body.group_id),
-                header: req.body.header,
-                content: req.body.content
-            });
-            newProject.save((error) => {
-                if (error) {
-                    console.log(error);
+            var tokenUsername = decodeUsername(req.headers);
+            User.findOne({
+                username: tokenUsername
+            })
+            .populate('group')
+            .exec( (error, user) => {
+                if(error) throw error;
+                if(!user) {
                     return res.json({
-                        status: 203,
+                        status: 201,
                         success: false,
-                        message: 'Project already exists.'
+                        message: 'Create project failed, user not found.'
+                    });
+                } else {
+                    console.log(user);
+                    var newProject = new Project({
+                        name: req.body.name,
+                        image_url: req.body.image_url,
+                        group: mongoose.Types.ObjectId(user.group._id),
+                        header: req.body.header,
+                        content: req.body.content
+                    });
+                    newProject.save((error) => {
+                        if (error) {
+                            console.log(error);
+                            return res.json({
+                                status: 203,
+                                success: false,
+                                message: 'Project already exists.'
+                            });
+                        }
+                        res.json({
+                            status: 200,
+                            success: true,
+                            message: 'Successful created new project.'
+                        });
                     });
                 }
-                res.json({
-                    status: 200,
-                    success: true,
-                    message: 'Successful created new project.'
-                });
             });
         }
     });
@@ -36,7 +54,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated) => {
     apiRoutes.get('/project', (req, res) => {
         Project
             .find({})
-            .populate('group_id')
+            .populate('group')
             .exec((error, projects) => {
                 if (error) throw error;
                 res.json({

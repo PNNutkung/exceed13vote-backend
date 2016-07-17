@@ -13,9 +13,9 @@ module.exports = (app, passport, express) => {
 
     require('./group/groupRoutes')(apiRoutes);
 
-    require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated);
+    require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername);
 
-    require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated);
+    require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }
@@ -66,4 +66,10 @@ var isAuthenticated = function(req, res, next) {
             message: 'Please login first.'
         });
     }
+};
+
+var decodeUsername = (headers) => {
+    var parted = headers.authorization.split(' ');
+    var decoded = jwt.decode(parted[1], config.secret);
+    return decoded.username;
 };
