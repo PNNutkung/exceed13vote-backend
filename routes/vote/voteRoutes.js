@@ -4,6 +4,44 @@ var config = require('./../../config/database');
 var jwt = require('jwt-simple');
 
 module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
+    apiRoutes.post('/vote/check_voted', (req, res) => {
+        var tokenUsername = decodeUsername(req.headers);
+        User.findOne({
+            username: tokenUsername
+        }, (error, user) => {
+            if(error)
+                return res.json({
+                    status: 403,
+                    success: false,
+                    message: 'Permission denied.'
+                });
+            Vote.find({
+                vote_category: req.body.category
+            })
+                .where('vote_user').equals(mongoose.Types.ObjectId(user._id))
+                .where('project').equals(mongoose.Types.ObjectId(req.body.project_id))
+                .populate({
+                    path: 'project',
+                    populate: {
+                        path: 'group'
+                    }
+                })
+                .exec((error, vote) => {
+                    if(error)
+                        return res.json({
+                            status: 403,
+                            success: false,
+                            message: 'Permission denied.'
+                        });
+                    return res.json({
+                        status: 201,
+                        success: false,
+                        vote: vote
+                    });
+                });
+        });
+    });
+
     apiRoutes.post('/vote/average', (req, res) => {
         Vote.find({
                 vote_category: req.body.category
