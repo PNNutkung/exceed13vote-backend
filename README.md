@@ -173,3 +173,31 @@ URL enconded
   "available": true
 }
 ```
+
+---
+
+## Vote
+## Header
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| Authorization | yes | User's token | eXceed13vote eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1NzhiNTk4YTAxZDAwMjYyMWEyN2IzNWQiLCJ1c2VybmFtZSI6ImRkZCIsInBhc3N3b3JkIjoiJDJhJDEwJDZLWGVSdlRaZjJ1ai9LbS5FNjJWa3U0L2MwV051SFVZZUxUQXNaWW9DR3JRakRvQU1OZkgyIiwiZ3JvdXAiOiI1NzgwZGFkODk5YWVjMTMxNTYwYTE1NzIiLCJfX3YiOjB9.62Tr8spEp2XOB7UluncCYW1edH8rvJjKgGt3O5EUiBo 20160729 |
+
+## Body
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| category | yes | Vote category (best_of_hardware, best_of_software, popular, top_rated) | best_of_hardware |
+| project_id | yes | Project's ID | 578b3cef8c1d44550238cc0b |
+| score | yes | Vote score | 3 |
+
+## Output: JSON
+```
+{
+  "status": 200,
+  "success": true,
+  "message": "Vote successfully."
+}
+```
+
+---
+
+## Vote Average
