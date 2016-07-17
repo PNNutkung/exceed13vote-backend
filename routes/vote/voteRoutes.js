@@ -4,22 +4,25 @@ var config = require('./../../config/database');
 var jwt = require('jwt-simple');
 
 module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
-    apiRoutes.get('/vote', (req, res) => {
-        Vote.find({})
+    apiRoutes.get('/vote/:group_name/average', (req, res) => {
+        Vote.find()
             .populate('vote_user')
             .populate({
                 path: 'project',
                 populate: {
-                    path: 'group'
+                    path: 'group',
+                    match: {
+                        group_name: req.params.group_name
+                    }
                 }
             })
             .exec((error, votes) => {
                 if (error) throw error;
-                res.json({
+                return res.json({
                     status: 200,
                     success: true,
                     votes: votes
-                })
+                });
             });
     });
 
