@@ -205,6 +205,10 @@ URL enconded
 ---
 
 ## Vote Average
+Suffix URL: /api/vote/average
+Method: **POST**  
+URL enconded
+
 ## Body
 | Parameter Name | Required | Remark |Example |
 | :-------------- |:-------------:|:--|:-------|
