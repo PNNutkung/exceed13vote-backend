@@ -41,7 +41,6 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     updateUserVote(req.body, user);
                     newVote.save((error) => {
                         if (error) {
-                            console.log(error);
                             return res.json({
                                 status: 201,
                                 success: false,

@@ -23,7 +23,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
                         message: 'Create project failed, user not found.'
                     });
                 } else {
-                    console.log(user);
                     var newProject = new Project({
                         name: req.body.name,
                         image_url: req.body.image_url,
@@ -33,7 +32,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
                     });
                     newProject.save((error) => {
                         if (error) {
-                            console.log(error);
                             return res.json({
                                 status: 203,
                                 success: false,

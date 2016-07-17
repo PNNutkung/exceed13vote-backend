@@ -23,7 +23,7 @@ module.exports = (app, passport, express) => {
 var getToken = (headers) => {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
-        if (parted.length === 3) {
+        if (parted.length === 3 && parted[0] === 'eXceed13vote') {
             return parted[1];
         } else {
             return null;
@@ -40,7 +40,7 @@ var isAuthenticated = function(req, res, next) {
             var decoded = jwt.decode(token, config.secret);
         } catch (e) {
             return res.json({
-                status: 403,
+                status: 201,
                 success: false,
                 message: 'Authentication failed. Use fake token!'
             });
@@ -51,7 +51,7 @@ var isAuthenticated = function(req, res, next) {
             if (error) throw error;
             if (!user) {
                 return res.json({
-                    status: 403,
+                    status: 201,
                     success: false,
                     message: 'Authentication failed. User not found.'
                 });
@@ -61,7 +61,7 @@ var isAuthenticated = function(req, res, next) {
         });
     } else {
         return res.json({
-            status: 403,
+            status: 202,
             success: false,
             message: 'Please login first.'
         });
