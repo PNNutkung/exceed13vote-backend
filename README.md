@@ -177,6 +177,10 @@ URL enconded
 ---
 
 ## Vote
+Suffix URL: /api/vote/
+Method: **POST**  
+URL enconded
+
 ## Header
 | Parameter Name | Required | Remark |Example |
 | :-------------- |:-------------:|:--|:-------|
@@ -201,3 +205,19 @@ URL enconded
 ---
 
 ## Vote Average
+## Body
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| category | yes | Vote category (best_of_hardware, best_of_software, popular, top_rated) | best_of_hardware |
+| project_id | yes | Project's ID | 578b3cef8c1d44550238cc0b |
+
+## Output: JSON
+```
+{
+  "status": 200,
+  "success": true,
+  "project": "Go pro",
+  "group": "Systema",
+  "average": 7
+}
+```
