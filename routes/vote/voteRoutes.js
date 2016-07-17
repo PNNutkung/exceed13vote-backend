@@ -7,7 +7,12 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
     apiRoutes.get('/vote', (req, res) => {
         Vote.find({})
             .populate('vote_user')
-            .populate('project')
+            .populate({
+                path: 'project',
+                populate: {
+                    path: 'group'
+                }
+            })
             .exec((error, votes) => {
                 if (error) throw error;
                 res.json({
