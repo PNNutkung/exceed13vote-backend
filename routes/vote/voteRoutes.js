@@ -9,12 +9,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
         User.findOne({
             username: tokenUsername
         }, (error, user) => {
-            if(error)
-                return res.json({
-                    status: 403,
-                    success: false,
-                    message: 'Permission denied.'
-                });
+            if(error) throw error;
             Vote.find({
                 vote_category: req.body.category
             })
@@ -27,15 +22,11 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     }
                 })
                 .exec((error, vote) => {
-                    if(error)
-                        return res.json({
-                            status: 403,
-                            success: false,
-                            message: 'Permission denied.'
-                        });
+                    if(error) throw error;
                     return res.json({
-                        status: 201,
-                        success: false,
+                        status: 200,
+                        success: true,
+                        username: user.username,
                         available: vote.length === 0
                     });
                 });
@@ -46,22 +37,18 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
         Vote.find({
                 vote_category: req.body.category
             })
-            .populate('vote_user')
-            .populate({
-                path: 'project',
-                populate: {
-                    path: 'group',
-                    match: {
-                        group_name: req.body.group_name
-                    }
-                }
-            })
+            .where('project').equals(mongoose.Types.ObjectId(req.body.project_id))
+            .populate('project')
             .exec((error, votes) => {
                 if (error) throw error;
+                var total = 0;
+                votes.forEach((vote) => {
+                    total += vote.score;
+                });
                 return res.json({
                     status: 200,
                     success: true,
-                    votes: votes
+                    average: votes.length === 0 ? 0:total/votes.length
                 });
             });
     });
