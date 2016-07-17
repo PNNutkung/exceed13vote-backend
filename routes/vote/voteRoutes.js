@@ -36,7 +36,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     return res.json({
                         status: 201,
                         success: false,
-                        vote: vote
+                        available: vote.length === 0
                     });
                 });
         });
