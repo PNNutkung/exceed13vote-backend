@@ -1,6 +1,8 @@
 eXceed 13 vote APIs
 ===
 
+# Install [nodejs](http://nodejs.org/) and run command `npm install`
+
 ## Sign up
 Suffix URL: /api/signup  
 Method: **POST**  
