@@ -1,7 +1,7 @@
 eXceed 13 vote APIs
 ===
 
-# Install [nodejs](http://nodejs.org/) and run command `npm install`
+# Install [nodejs](http://nodejs.org/) and run command `npm install`, database use [mongodb](https://www.mongodb.com/) [installation](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
 
 ## Sign up
 Suffix URL: /api/signup  
