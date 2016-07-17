@@ -18,13 +18,10 @@ var ProjectSchema = new Schema({
         unique: true,
         required: true
     },
-    header: {
-        type: String,
-        required: true
-    },
     content: {
-        type: String,
-        required: true
+        type: Array,
+        required: true,
+        default: []
     }
 });
 

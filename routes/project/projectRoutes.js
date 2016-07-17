@@ -2,7 +2,7 @@ var Project = require('./../../app/models/project');
 var User = require('./../../app/models/user');
 module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
     apiRoutes.post('/project', isAuthenticated, (req, res) => {
-        if (!req.body.name || !req.body.image_url || !req.body.header || !req.body.content) {
+        if (!req.body.name || !req.body.image_url || !req.body.content) {
             res.json({
                 status: 202,
                 success: false,
@@ -27,8 +27,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
                         name: req.body.name,
                         image_url: req.body.image_url,
                         group: mongoose.Types.ObjectId(user.group._id),
-                        header: req.body.header,
-                        content: req.body.content
+                        content: JSON.parse(req.body.content)
                     });
                     newProject.save((error) => {
                         if (error) {
