@@ -1,8 +1,11 @@
 eXceed 13 vote APIs
 ===
 
-# Install [nodejs](http://nodejs.org/) and run command `npm install`, database use [mongodb](https://www.mongodb.com/) [installation](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
+# Installation
+First install [nodejs](http://nodejs.org/) and run command `npm install`, database use [mongodb](https://www.mongodb.com/) [installation (Ubuntu 16.04)](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
 
+# APIs details
+---
 ## Sign up
 Suffix URL: /api/signup  
 Method: **POST**  
@@ -227,9 +230,9 @@ URL enconded
   "average": 7
 }
 ```
-
+---
 ## Show All groups
-Suffix URL: /api/groups
+Suffix URL: /api/groups  
 Method: **GET**  
 
 ## Output: JSON
@@ -286,6 +289,30 @@ Method: **GET**
       "_id": "578b6c01537c9526c85cf53d",
       "group_name": "Alexceed Sanchez"
     }
+  ]
+}
+```
+---
+
+## Show Group Members
+Suffix URL: /api/group/member  
+Method: **POST**  
+URL enconded
+
+## Body
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| group | yes | Group's ID | 578b6bb7537c9526c85cf532 |
+
+## Output: JSON
+```
+{
+  "status": 200,
+  "success": true,
+  "group_name": "Systema",
+  "members": [
+    "aaa",
+    "ccc"
   ]
 }
 ```

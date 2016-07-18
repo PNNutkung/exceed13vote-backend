@@ -27,8 +27,10 @@ module.exports = (apiRoutes, mongoose) => {
                 usersArray.push(user.username);
             });
             return res.json({
-                group: users[0].group.group_name,
-                member: usersArray
+                status: 200,
+                success: true,
+                group_name: users[0].group.group_name,
+                members: usersArray
             });
         });
     });
