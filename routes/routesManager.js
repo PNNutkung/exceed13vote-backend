@@ -11,7 +11,7 @@ module.exports = (app, passport, express) => {
 
     require('./user/userRoutes')(apiRoutes, passport, mongoose);
 
-    require('./group/groupRoutes')(apiRoutes);
+    require('./group/groupRoutes')(apiRoutes, mongoose);
 
     require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername);
 
