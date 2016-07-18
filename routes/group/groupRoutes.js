@@ -1,7 +1,7 @@
 var Group = require('./../../app/models/group');
 var User = require('./../../app/models/user');
 
-module.exports = (apiRoutes, mongoose) => {
+module.exports = (apiRoutes, mongoose, isAuthenticated) => {
     apiRoutes.get('/groups', (req, res) => {
         Group
         .find({},
@@ -31,6 +31,26 @@ module.exports = (apiRoutes, mongoose) => {
                 success: true,
                 group_name: users[0].group.group_name,
                 members: usersArray
+            });
+        });
+    });
+
+    apiRoutes.post('/groups', isAuthenticated, (req, res) => {
+        var newGroup = new Group({
+            group_name: req.body.group_name
+        });
+        newGroup.save((error) => {
+            if(error) {
+                return res.json({
+                    status: 201,
+                    success: false,
+                    message: 'Add group failed'
+                });
+            }
+            return res.json({
+                status: 200,
+                success: true,
+                message: 'Add a new group successfully.'
             });
         });
     });
