@@ -227,3 +227,65 @@ URL enconded
   "average": 7
 }
 ```
+
+## Show All groups
+Suffix URL: /api/groups
+Method: **GET**  
+
+## Output: JSON
+```
+{
+  "status": 200,
+  "success": true,
+  "groups": [
+    {
+      "_id": "578b6bb7537c9526c85cf532",
+      "group_name": "Systema"
+    },
+    {
+      "_id": "578b6bc0537c9526c85cf533",
+      "group_name": "Justseed"
+    },
+    {
+      "_id": "578b6bc7537c9526c85cf534",
+      "group_name": "Ohzeed"
+    },
+    {
+      "_id": "578b6bcd537c9526c85cf535",
+      "group_name": "Have a Zeed"
+    },
+    {
+      "_id": "578b6bd2537c9526c85cf536",
+      "group_name": "ceedX"
+    },
+    {
+      "_id": "578b6bd7537c9526c85cf537",
+      "group_name": "OAZeeD"
+    },
+    {
+      "_id": "578b6bde537c9526c85cf538",
+      "group_name": "Seat Belt"
+    },
+    {
+      "_id": "578b6be6537c9526c85cf539",
+      "group_name": "Zeedluck"
+    },
+    {
+      "_id": "578b6bed537c9526c85cf53a",
+      "group_name": "Zeeeeedstem"
+    },
+    {
+      "_id": "578b6bf3537c9526c85cf53b",
+      "group_name": "ZeedDown"
+    },
+    {
+      "_id": "578b6bf7537c9526c85cf53c",
+      "group_name": "LinkZeed"
+    },
+    {
+      "_id": "578b6c01537c9526c85cf53d",
+      "group_name": "Alexceed Sanchez"
+    }
+  ]
+}
+```
