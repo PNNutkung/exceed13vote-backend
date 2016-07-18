@@ -6,6 +6,9 @@ eXceed 13 vote APIs
 # Installation
 First install [nodejs](http://nodejs.org/) and run command `npm install`, database use [mongodb](https://www.mongodb.com/) [installation (Ubuntu 16.04)](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
 
+# How to run
+Just `node server.js`
+
 APIs details
 ===
 ## Sign up
