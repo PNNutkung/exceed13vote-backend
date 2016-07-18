@@ -231,7 +231,30 @@ URL enconded
 }
 ```
 ---
-## Show All groups
+## Add New Group
+Suffix URL: /api/groups  
+Method: **POST**  
+
+## Header
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| Authorization | yes | User's token | eXceed13vote eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1NzhiNTk4YTAxZDAwMjYyMWEyN2IzNWQiLCJ1c2VybmFtZSI6ImRkZCIsInBhc3N3b3JkIjoiJDJhJDEwJDZLWGVSdlRaZjJ1ai9LbS5FNjJWa3U0L2MwV051SFVZZUxUQXNaWW9DR3JRakRvQU1OZkgyIiwiZ3JvdXAiOiI1NzgwZGFkODk5YWVjMTMxNTYwYTE1NzIiLCJfX3YiOjB9.62Tr8spEp2XOB7UluncCYW1edH8rvJjKgGt3O5EUiBo 20160729 |
+
+## Body
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| group_name | yes | Group's name | eXceed13team |
+
+## Output: JSON
+```
+{
+  "status": 200,
+  "success": true,
+  "message": "Add a new group successfully."
+}
+```
+---
+## Show All Groups
 Suffix URL: /api/groups  
 Method: **GET**  
 
