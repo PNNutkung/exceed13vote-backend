@@ -1,9 +1,9 @@
 var Project = require('./../../app/models/project');
 var User = require('./../../app/models/user');
-module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
+module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle) => {
     apiRoutes.post('/project', isAuthenticated, (req, res) => {
         if (!req.body.name || !req.body.image_url || !req.body.content) {
-            res.json({
+            return res.json({
                 status: 202,
                 success: false,
                 message: 'Please pass all required data.'
@@ -15,7 +15,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
             })
             .populate('group')
             .exec( (error, user) => {
-                if(error) throw error;
+                if(error) return errorHandle(res);
                 if(!user) {
                     return res.json({
                         status: 201,
@@ -37,7 +37,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
                                 message: 'Project already exists.'
                             });
                         }
-                        res.json({
+                        return res.json({
                             status: 200,
                             success: true,
                             message: 'Successful created new project.'
@@ -53,8 +53,8 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
             .find({})
             .populate('group')
             .exec((error, projects) => {
-                if (error) throw error;
-                res.json({
+                if(error) return errorHandle(res);
+                return res.json({
                     status: 200,
                     success: true,
                     projects: projects

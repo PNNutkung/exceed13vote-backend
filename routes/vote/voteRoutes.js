@@ -4,13 +4,13 @@ var Project = require('./../../app/models/project');
 var config = require('./../../config/database');
 var jwt = require('jwt-simple');
 
-module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername) => {
+module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle) => {
     apiRoutes.post('/vote/check_voted', isAuthenticated, categoryCheck, (req, res) => {
         var tokenUsername = decodeUsername(req.headers);
         User.findOne({
             username: tokenUsername
         }, (error, user) => {
-            if (error) throw error;
+            if (error) return errorHandle(res);
             Vote.find({
                     vote_category: req.body.category
                 })
@@ -23,7 +23,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     }
                 })
                 .exec((error, vote) => {
-                    if (error) throw error;
+                    if (error) return errorHandle(res);
                     return res.json({
                         status: 200,
                         success: true,
@@ -46,7 +46,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                 }
             })
             .exec((error, votes) => {
-                if (error) throw error;
+                if (error) return errorHandle(res);
                 var total = 0;
                 votes.forEach((vote) => {
                     total += vote.score;
@@ -72,7 +72,7 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
         User.findOne({
             username: tokenUsername
         }, (error, user) => {
-            if (error) throw error;
+            if (error) return errorHandle(res);
             if (!user) {
                 return res.json({
                     status: 201,

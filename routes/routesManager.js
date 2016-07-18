@@ -9,13 +9,13 @@ module.exports = (app, passport, express) => {
     // bundle our routes
     var apiRoutes = express.Router();
 
-    require('./user/userRoutes')(apiRoutes, passport, mongoose);
+    require('./user/userRoutes')(apiRoutes, passport, mongoose, errorHandle);
 
-    require('./group/groupRoutes')(apiRoutes, mongoose);
+    require('./group/groupRoutes')(apiRoutes, mongoose, errorHandle);
 
-    require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername);
+    require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
 
-    require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername);
+    require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }
@@ -72,4 +72,12 @@ var decodeUsername = (headers) => {
     var parted = headers.authorization.split(' ');
     var decoded = jwt.decode(parted[1], config.secret);
     return decoded.username;
+};
+
+var errorHandle = (res) => {
+    return res.json({
+        status: 206,
+        success: false,
+        message: 'Error please check your parameter.'
+    });
 };

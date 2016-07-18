@@ -2,12 +2,12 @@ var jwt = require('jwt-simple');
 var config = require('./../../config/database');
 var User = require('./../../app/models/user');
 
-module.exports = (apiRoutes, passport, mongoose) => {
+module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
 
     // create a new user account (POST http://localhost:8080/api/signup)
     apiRoutes.post('/signup', (req, res) => {
         if (!req.body.username || !req.body.password) {
-            res.json({
+            return res.json({
                 status: 202,
                 success: false,
                 message: 'Please pass name and password.'
@@ -20,14 +20,13 @@ module.exports = (apiRoutes, passport, mongoose) => {
             });
             newUser.save((error) => {
                 if (error) {
-                    console.log(error);
                     return res.json({
                         status: 203,
                         success: false,
                         message: 'Username already exists.'
                     });
                 }
-                res.json({
+                return res.json({
                     status: 200,
                     success: true,
                     message: 'Successful created new user.'
@@ -41,10 +40,10 @@ module.exports = (apiRoutes, passport, mongoose) => {
         User.findOne({
             username: req.body.username
         }, (error, user) => {
-            if (error) throw error;
+            if(error) return errorHandle(res);
             if (!user) {
-                res.send({
-                    status: 403,
+                return res.json({
+                    status: 203,
                     success: false,
                     message: 'Authentication failed. User not found.'
                 });
@@ -59,13 +58,13 @@ module.exports = (apiRoutes, passport, mongoose) => {
                             .populate('group')
                             .exec((error, user) => {
                                 if(error) {
-                                    res.json({
+                                    return res.json({
                                         status: 201,
                                         success: false,
                                         message: 'Cannot found user.'
                                     });
                                 }
-                                res.json({
+                                return res.json({
                                     status: 200,
                                     success: true,
                                     username: user.username,
@@ -74,7 +73,7 @@ module.exports = (apiRoutes, passport, mongoose) => {
                                 })
                             });
                     } else {
-                        res.send({
+                        return res.json({
                             status: 201,
                             success: false,
                             message: 'Authentication failed. Wrong password.'
