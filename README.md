@@ -1,3 +1,5 @@
+![eXceed13 logo](./exceed13.jpg)
+
 eXceed 13 vote APIs
 ===
 
