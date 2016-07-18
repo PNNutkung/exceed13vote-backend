@@ -323,7 +323,7 @@ Method: **GET**
 ---
 
 ## Show Group Members
-Suffix URL: /api/group/member  
+Suffix URL: /api/groups/member  
 Method: **POST**  
 URL enconded
 
