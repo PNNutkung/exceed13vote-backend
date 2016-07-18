@@ -1,7 +1,7 @@
 var Group = require('./../../app/models/group');
 var User = require('./../../app/models/user');
 
-module.exports = (apiRoutes, mongoose, isAuthenticated) => {
+module.exports = (apiRoutes, mongoose) => {
     apiRoutes.get('/groups', (req, res) => {
         Group
         .find({},
