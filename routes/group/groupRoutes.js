@@ -35,7 +35,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated) => {
         });
     });
 
-    apiRoutes.post('/groups', isAuthenticated, (req, res) => {
+    apiRoutes.post('/groups', (req, res) => {
         var newGroup = new Group({
             group_name: req.body.group_name
         });
