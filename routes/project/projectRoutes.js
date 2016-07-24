@@ -41,18 +41,34 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     });
 
     apiRoutes.put('/project', isAuthenticated, isPassAllRequire, (req, res) => {
-        Project.findOne({
-            _id: mongoose.Types.ObjectId(req.body.project_id)
-        }, (err, project) => {
-            if(err) return errorHandle();
-            project.name = req.body.name,
-            project.image_url = req.body.image_url,
-            project.content = req.body.content
-            project.save();
-            return res.json({
-                staus: 200,
-                success: true,
-                message: 'Save change successfully.'
+        var tokenUsername = decodeUsername(req.headers);
+        User.findOne({
+            username: tokenUsername
+        })
+        .populate('group')
+        .exec((err, user) => {
+            Project.findOne({
+                _id: mongoose.Types.ObjectId(req.body.project_id)
+            })
+            .populate('group')
+            .exec((err, project) => {
+                if(err) return errorHandle();
+                if(user.group._id.toString() !== project.group._id.toString()) {
+                    return res.json({
+                        status: 403,
+                        success: false,
+                        message: 'You don\'t have a permission.'
+                    });
+                }
+                project.name = req.body.name,
+                project.image_url = req.body.image_url,
+                project.content = req.body.content
+                project.save();
+                return res.json({
+                    status: 200,
+                    success: true,
+                    message: 'Save change successfully.'
+                });
             });
         });
     });
