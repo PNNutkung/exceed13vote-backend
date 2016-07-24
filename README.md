@@ -157,12 +157,9 @@ Method: **GET**
 ```
 ---
 
-## Vote Checker
-Suffix URL: /api/vote/check_voted  
-Method: **POST**  
-URL enconded
-
-
+## Update Project details
+Suffix URL: /api/project  
+Method: **PUT**  
 ## Header
 | Parameter Name | Required | Remark |Example |
 | :-------------- |:-------------:|:--|:-------|
@@ -171,7 +168,30 @@ URL enconded
 ## Body
 | Parameter Name | Required | Remark |Example |
 | :-------------- |:-------------:|:--|:-------|
-| category | yes | Vote category (best_of_hardware, best_of_software, popular, top_rated) | best_of_hardware |
+| project_id | yes | Project's ID | 578b6c3944fc8ba42a16e998 |
+| name | yes | Project's name | Smart Smoke Detector |
+| image_url | yes | Link to image file | http://exceed.cpe.ku.ac.th/wiki/images/5/55/11802617_10206898348362241_5034490617162168826_o.jpg |
+| content | yes | Project's description | "[{"header": "this is header5", "desc": "this is desc5"},{"header": "this is header6", "desc": "this is desc6"}]" |
+
+## Output: JSON
+```
+{
+  "status": 200,
+  "success": true,
+  "message": "Save change successfully."
+}
+```
+---
+
+## Vote Checker
+Suffix URL: /api/vote/check_vote  
+Method: **GET**  
+
+
+## Header
+| Parameter Name | Required | Remark |Example |
+| :-------------- |:-------------:|:--|:-------|
+| Authorization | yes | User's token | eXceed13vote eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1NzhiNTk4YTAxZDAwMjYyMWEyN2IzNWQiLCJ1c2VybmFtZSI6ImRkZCIsInBhc3N3b3JkIjoiJDJhJDEwJDZLWGVSdlRaZjJ1ai9LbS5FNjJWa3U0L2MwV051SFVZZUxUQXNaWW9DR3JRakRvQU1OZkgyIiwiZ3JvdXAiOiI1NzgwZGFkODk5YWVjMTMxNTYwYTE1NzIiLCJfX3YiOjB9.62Tr8spEp2XOB7UluncCYW1edH8rvJjKgGt3O5EUiBo 20160729 |
 | project_id | yes | Project's ID | 578b3cef8c1d44550238cc0b |
 
 ## Output: JSON
@@ -179,8 +199,10 @@ URL enconded
 {
   "status": 200,
   "success": true,
-  "username": "ddd",
-  "available": true
+  "username": "aaa",
+  "best_of_hardware": false,
+  "best_of_software": false,
+  "popular": true
 }
 ```
 
