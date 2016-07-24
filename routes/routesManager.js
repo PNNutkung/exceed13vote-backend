@@ -16,6 +16,8 @@ module.exports = (app, passport, express) => {
     require('./project/projectRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
 
     require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
+
+    require('./comment/commentRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }

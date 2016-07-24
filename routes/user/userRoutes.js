@@ -45,7 +45,7 @@ module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
                 return res.json({
                     status: 203,
                     success: false,
-                    message: 'Authentication failed. User not found.'
+                    message: 'Authentication failed. Wrong username or password.'
                 });
             } else {
                 user.comparePassword(req.body.password, (error, isMatch) => {
@@ -61,7 +61,7 @@ module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
                                     return res.json({
                                         status: 201,
                                         success: false,
-                                        message: 'Cannot found user.'
+                                        message: 'Authentication failed. Wrong username or password.'
                                     });
                                 }
                                 return res.json({
@@ -69,6 +69,7 @@ module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
                                     success: true,
                                     username: user.username,
                                     group: user.group.group_name,
+                                    teacher: user.teacher,
                                     token: 'eXceed13vote ' + token + ' 20160729'
                                 })
                             });
@@ -76,7 +77,7 @@ module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
                         return res.json({
                             status: 201,
                             success: false,
-                            message: 'Authentication failed. Wrong password.'
+                            message: 'Authentication failed. Wrong username or password.'
                         });
                     }
                 });

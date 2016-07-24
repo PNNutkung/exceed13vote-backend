@@ -52,7 +52,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             })
             .populate('group')
             .exec((err, project) => {
-                if(err) return errorHandle();
+                if(err) return errorHandle(res);
                 if(user.group._id.toString() !== project.group._id.toString()) {
                     return res.json({
                         status: 403,
@@ -60,9 +60,9 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         message: 'You don\'t have a permission.'
                     });
                 }
-                project.name = req.body.name,
-                project.image_url = req.body.image_url,
-                project.content = req.body.content
+                project.name = req.body.name;
+                project.image_url = req.body.image_url;
+                project.content = req.body.content;
                 project.save();
                 return res.json({
                     status: 200,

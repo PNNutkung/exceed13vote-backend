@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Project = require('./project');
 
 var CommentSchema = new Schema({
     username: {
@@ -8,8 +9,8 @@ var CommentSchema = new Schema({
         required: true
     },
     project: {
-        type: String,
-        unique: true,
+        type: Schema.ObjectId,
+        ref: 'Project',
         required: true
     },
     detail: {
