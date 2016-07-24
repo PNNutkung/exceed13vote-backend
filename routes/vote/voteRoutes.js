@@ -13,49 +13,49 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
         }, (error, user) => {
             if (error) return errorHandle(res);
             CheckVote.find({
-                username: user.username
-            })
-            .where('project').equals(mongoose.Types.ObjectId(req.headers.project_id))
-            .populate({
-                path: 'project',
-                populate: {
-                    path: 'group'
-                }
-            })
-            .exec((err, checkVote) => {
-                if(err) return errorHandle(res);
-                if(checkVote.length === 0) {
-                    var newCheckVote = new CheckVote({
-                        username: user.username,
-                        project: mongoose.Types.ObjectId(req.headers.project_id)
-                    });
-                    newCheckVote.save((error) => {
-                        if (error) {
-                            return res.json({
-                                status: 201,
-                                success: false,
-                                message: 'Check vote failed.'
-                            });
-                        }
-                    });
+                    username: user.username
+                })
+                .where('project').equals(mongoose.Types.ObjectId(req.headers.project_id))
+                .populate({
+                    path: 'project',
+                    populate: {
+                        path: 'group'
+                    }
+                })
+                .exec((err, checkVote) => {
+                    if (err) return errorHandle(res);
+                    if (checkVote.length === 0) {
+                        var newCheckVote = new CheckVote({
+                            username: user.username,
+                            project: mongoose.Types.ObjectId(req.headers.project_id)
+                        });
+                        newCheckVote.save((error) => {
+                            if (error) {
+                                return res.json({
+                                    status: 201,
+                                    success: false,
+                                    message: 'Check vote failed.'
+                                });
+                            }
+                        });
+                        return res.json({
+                            status: 200,
+                            success: true,
+                            username: user.username,
+                            best_of_hardware: newCheckVote.best_of_hardware,
+                            best_of_software: newCheckVote.best_of_software,
+                            popular: newCheckVote.popular
+                        });
+                    }
                     return res.json({
                         status: 200,
                         success: true,
                         username: user.username,
-                        best_of_hardware: newCheckVote.best_of_hardware,
-                        best_of_software: newCheckVote.best_of_software,
-                        popular: newCheckVote.popular
+                        best_of_hardware: checkVote[0].best_of_hardware,
+                        best_of_software: checkVote[0].best_of_software,
+                        popular: checkVote[0].popular
                     });
-                }
-                return res.json({
-                    status: 200,
-                    success: true,
-                    username: user.username,
-                    best_of_hardware: checkVote[0].best_of_hardware,
-                    best_of_software: checkVote[0].best_of_software,
-                    popular: checkVote[0].popular
                 });
-            });
         });
     });
 
@@ -119,35 +119,23 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                             message: 'Vote failed.'
                         });
                     }
-                    switch (req.body.category) {
-                        case 'best_of_hardware':
-                            CheckVote.findOne({
-                                username: user.username,
-                                project: mongoose.Types.ObjectId(req.body.project_id)
-                            }, (err, checkVote) => {
+                    CheckVote.findOne({
+                        username: user.username,
+                        project: mongoose.Types.ObjectId(req.body.project_id)
+                    }, (err, checkVote) => {
+                        switch (req.body.category) {
+                            case 'best_of_hardware':
                                 checkVote.best_of_hardware = false;
-                                checkVote.save();
-                            });
-                            break;
-                        case 'best_of_software':
-                            CheckVote.findOne({
-                                username: user.username,
-                                project: mongoose.Types.ObjectId(req.body.project_id)
-                            }, (err, checkVote) => {
+                                break;
+                            case 'best_of_software':
                                 checkVote.best_of_software = false;
-                                checkVote.save();
-                            });
-                            break;
-                        case 'popular':
-                            CheckVote.findOne({
-                                username: user.username,
-                                project: mongoose.Types.ObjectId(req.body.project_id)
-                            }, (err, checkVote) => {
+                                break;
+                            case 'popular':
                                 checkVote.popular = false;
-                                checkVote.save();
-                            });
-                            break;
-                    }
+                                break;
+                        }
+                        checkVote.save();
+                    });
 
                     return res.json({
                         status: 200,
