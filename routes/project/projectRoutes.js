@@ -1,22 +1,15 @@
 var Project = require('./../../app/models/project');
 var User = require('./../../app/models/user');
 module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle) => {
-    apiRoutes.post('/project', isAuthenticated, (req, res) => {
-        if (!req.body.name || !req.body.image_url || !req.body.content) {
-            return res.json({
-                status: 202,
-                success: false,
-                message: 'Please pass all required data.'
-            });
-        } else {
-            var tokenUsername = decodeUsername(req.headers);
-            User.findOne({
+    apiRoutes.post('/project', isAuthenticated, isPassAllRequire, (req, res) => {
+        var tokenUsername = decodeUsername(req.headers);
+        User.findOne({
                 username: tokenUsername
             })
             .populate('group')
-            .exec( (error, user) => {
-                if(error) return errorHandle(res);
-                if(!user) {
+            .exec((error, user) => {
+                if (error) return errorHandle(res);
+                if (!user) {
                     return res.json({
                         status: 201,
                         success: false,
@@ -45,7 +38,23 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                     });
                 }
             });
-        }
+    });
+
+    apiRoutes.put('/project', isAuthenticated, isPassAllRequire, (req, res) => {
+        Project.findOne({
+            _id: mongoose.Types.ObjectId(req.body.project_id)
+        }, (err, project) => {
+            if(err) return errorHandle();
+            project.name = req.body.name,
+            project.image_url = req.body.image_url,
+            project.content = req.body.content
+            project.save();
+            return res.json({
+                staus: 200,
+                success: true,
+                message: 'Save change successfully.'
+            });
+        });
     });
 
     apiRoutes.get('/project', (req, res) => {
@@ -53,7 +62,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             .find({})
             .populate('group')
             .exec((error, projects) => {
-                if(error) return errorHandle(res);
+                if (error) return errorHandle(res);
                 return res.json({
                     status: 200,
                     success: true,
@@ -61,4 +70,15 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 });
             });
     });
+};
+
+var isPassAllRequire = function(req, res, next) {
+    if (!req.body.name || !req.body.image_url || !req.body.content) {
+        return res.json({
+            status: 202,
+            success: false,
+            message: 'Please pass all required data.'
+        });
+    }
+    return next();
 };
