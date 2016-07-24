@@ -17,6 +17,16 @@ var UserSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Group',
         required: true
+    },
+    teacher: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    admin: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 
