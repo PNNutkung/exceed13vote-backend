@@ -89,10 +89,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
 };
 
 var isPassAllRequire = function(req, res, next) {
-    console.log(req.body);
     if (!req.body.name || !req.body.image_url || !req.body.content) {
-        console.log(req.body);
-        console.log(req.body.name +' '+req.body.image_url + ' ' + req.body.content);
         return res.json({
             status: 202,
             success: false,
