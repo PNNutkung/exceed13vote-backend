@@ -40,7 +40,7 @@ module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
         User.findOne({
             username: req.body.username
         }, (error, user) => {
-            if(error) return errorHandle(res);
+            if (error) return errorHandle(res);
             if (!user) {
                 return res.json({
                     status: 203,
@@ -57,7 +57,7 @@ module.exports = (apiRoutes, passport, mongoose, errorHandle) => {
                             })
                             .populate('group')
                             .exec((error, user) => {
-                                if(error) {
+                                if (error) {
                                     return res.json({
                                         status: 201,
                                         success: false,

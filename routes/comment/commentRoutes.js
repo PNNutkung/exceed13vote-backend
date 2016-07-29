@@ -7,7 +7,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
         Comment.find({
             project: mongoose.Types.ObjectId(req.headers.project_id)
         }, (err, comments) => {
-            if(err) return errorHandle(res);
+            if (err) return errorHandle(res);
             return res.json({
                 status: 200,
                 success: true,
@@ -29,7 +29,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         success: false,
                         message: 'Comment failed, user not found.'
                     });
-                } else if(!user.teacher) {
+                } else if (!user.teacher) {
                     return res.json({
                         status: 403,
                         success: false,
@@ -63,30 +63,30 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     apiRoutes.put('/comment', isAuthenticated, isPassAllRequirePut, (req, res) => {
         var tokenUsername = decodeUsername(req.headers);
         User.findOne({
-            username: tokenUsername
-        })
-        .exec((err, user) => {
-            Comment.findOne({
-                _id: mongoose.Types.ObjectId(req.body.comment_id)
+                username: tokenUsername
             })
-            .exec((err, comment) => {
-                if(err) return errorHandle(res);
-                if(user.username !== comment.username || !user.teacher) {
-                    return res.json({
-                        status: 403,
-                        success: false,
-                        message: 'You don\'t have a permission.'
+            .exec((err, user) => {
+                Comment.findOne({
+                        _id: mongoose.Types.ObjectId(req.body.comment_id)
+                    })
+                    .exec((err, comment) => {
+                        if (err) return errorHandle(res);
+                        if (user.username !== comment.username || !user.teacher) {
+                            return res.json({
+                                status: 403,
+                                success: false,
+                                message: 'You don\'t have a permission.'
+                            });
+                        }
+                        comment.detail = req.body.detail;
+                        comment.save();
+                        return res.json({
+                            status: 200,
+                            success: true,
+                            message: 'Save change successfully.'
+                        });
                     });
-                }
-                comment.detail = req.body.detail;
-                comment.save();
-                return res.json({
-                    status: 200,
-                    success: true,
-                    message: 'Save change successfully.'
-                });
             });
-        });
     });
 };
 
