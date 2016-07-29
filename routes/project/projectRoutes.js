@@ -22,7 +22,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         name: req.body.name,
                         image_url: req.body.image_url,
                         group: mongoose.Types.ObjectId(user.group._id),
-                        content: JSON.parse(req.body.content)
+                        content: req.body.content
                     });
                     newProject.save((error) => {
                         if (error) {
