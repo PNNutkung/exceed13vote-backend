@@ -16,6 +16,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         message: 'Create project failed, user not found.'
                     });
                 } else {
+                    console.log(req.body.content);
                     console.log(JSON.parse(req.body.content));
                     var newProject = new Project({
                         name: req.body.name,
