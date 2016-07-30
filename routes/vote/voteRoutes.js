@@ -197,7 +197,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     apiRoutes.post('/vote/top_rated', function(req, res) {
         Vote.aggregate([
             {
-                "$unwind": '$votes',
                 "$match": {
                     'project': {
                         "$eq": mongoose.Types.ObjectId(req.body.project_id)
