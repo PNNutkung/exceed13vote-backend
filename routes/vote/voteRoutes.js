@@ -215,13 +215,14 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             .exec(function(err, result) {
                 if(err)
                     return errorHandle();
-                else
+                else {
+                    console.log(result);
                     return res.json({
                         status: 200,
                         project_name: vote.project.project_name,
-                        group_name: vote.project.group.group_name,
                         total_score: result.total_score
                     });
+                }
             });
         });
     });
