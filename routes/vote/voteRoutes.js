@@ -203,7 +203,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             Vote.aggregate()
             .group({
                 _id: null,
-                project_name: vote.project.project_name,
+                project_name: vote.project_name,
                 total_score: {$sum: '$score'}
             })
             .exec(function(err, res) {
