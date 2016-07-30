@@ -197,13 +197,13 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     });
 
     apiRoutes.post('/vote/top_rated', function(req, res) {
-        Vote.findOne({
+        Vote.find({
             project: mongoose.Types.ObjectId(req.body.project_id)
         }).exec(function(err, vote) {
             Vote.aggregate()
             .group({
                 _id: null,
-                project_name: vote.project_name,
+                project_name: vote[0].project.project_name,
                 total_score: {$sum: '$score'}
             })
             .exec(function(err, res) {
