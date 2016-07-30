@@ -145,44 +145,52 @@ module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeU
                     message: 'Vote successfully.'
                 });
             } else {
-                var newVote = new Vote({
-                    vote_user: mongoose.Types.ObjectId(user._id),
-                    vote_category: req.body.category,
-                    project: mongoose.Types.ObjectId(req.body.project_id),
-                    score: req.body.score
-                });
-                newVote.save((error) => {
-                    if (error) {
-                        return res.json({
-                            status: 201,
-                            success: false,
-                            message: 'Vote failed.'
-                        });
-                    }
-                    CheckVote.findOne({
-                        username: user.username,
-                        project: mongoose.Types.ObjectId(req.body.project_id)
-                    }, (err, checkVote) => {
-                        switch (req.body.category) {
-                            case 'best_of_hardware':
-                                checkVote.best_of_hardware = false;
-                                break;
-                            case 'best_of_software':
-                                checkVote.best_of_software = false;
-                                break;
-                            case 'popular':
-                                checkVote.popular = false;
-                                break;
-                        }
-                        checkVote.save();
+                if(req.body.score > -1) {
+                    var newVote = new Vote({
+                        vote_user: mongoose.Types.ObjectId(user._id),
+                        vote_category: req.body.category,
+                        project: mongoose.Types.ObjectId(req.body.project_id),
+                        score: req.body.score
                     });
+                    newVote.save((error) => {
+                        if (error) {
+                            return res.json({
+                                status: 201,
+                                success: false,
+                                message: 'Vote failed.'
+                            });
+                        }
+                        CheckVote.findOne({
+                            username: user.username,
+                            project: mongoose.Types.ObjectId(req.body.project_id)
+                        }, (err, checkVote) => {
+                            switch (req.body.category) {
+                                case 'best_of_hardware':
+                                    checkVote.best_of_hardware = false;
+                                    break;
+                                case 'best_of_software':
+                                    checkVote.best_of_software = false;
+                                    break;
+                                case 'popular':
+                                    checkVote.popular = false;
+                                    break;
+                            }
+                            checkVote.save();
+                        });
 
+                        return res.json({
+                            status: 200,
+                            success: true,
+                            message: 'Vote successfully.'
+                        });
+                    });
+                } else {
                     return res.json({
                         status: 200,
-                        success: true,
-                        message: 'Vote successfully.'
+                        success: false,
+                        message: 'You did not vote.'
                     });
-                });
+                }
             }
         });
     });
