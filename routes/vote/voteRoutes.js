@@ -5,7 +5,7 @@ var CheckVote = require('./../../app/models/checkVote');
 var config = require('./../../config/database');
 var jwt = require('jwt-simple');
 
-module.exports = module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle) => {
+module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle) => {
     apiRoutes.get('/vote/check_vote', isAuthenticated, (req, res) => {
         var tokenUsername = decodeUsername(req.headers);
         User.findOne({

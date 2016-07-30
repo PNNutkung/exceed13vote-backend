@@ -18,6 +18,8 @@ module.exports = (app, passport, express) => {
     require('./vote/voteRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
 
     require('./comment/commentRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
+
+    require('./time/timeRoutes')(apiRoutes, errorHandle);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }
