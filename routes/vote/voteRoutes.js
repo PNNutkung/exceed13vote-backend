@@ -142,7 +142,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         Project.findOne({
                             project: mongoose.Types.ObjectId(req.body.project_id)
                         }, function(err, project) {
-                            project.total_score = project.total_score + req.body.score;
+                            project.total_score += req.body.score;
                             project.save();
                         });
                     });
@@ -190,7 +190,9 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         Project.findOne({
                             project: mongoose.Types.ObjectId(req.body.project_id)
                         }, function(err, project) {
-                            project.total_score = project.total_score + req.body.score;
+                            if(!req.body.score)
+                                return errorHandle();
+                            project.total_score += req.body.score;
                             project.save();
                         });
                         return res.json({
