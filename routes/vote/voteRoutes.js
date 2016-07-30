@@ -136,12 +136,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                                     break;
                             }
                             checkVote.save();
-                            Project.findOne({
-                                _id: mongoose.Types.ObjectId(req.body.project_id)
-                            }, function(err, project) {
-                                project.total_score += req.body.score;
-                                project.save();
-                            });
                         });
                     });
                 }
@@ -182,13 +176,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                                     break;
                             }
                             checkVote.save();
-                            Project.findOne({
-                                _id: mongoose.Types.ObjectId(req.body.project_id)
-                            }, function(err, project) {
-                                console.log('Total score: '+project.total_score);
-                                project.total_score += req.body.score;
-                                project.save();
-                            });
                         });
                         return res.json({
                             status: 200,
@@ -208,18 +195,21 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     });
 
     apiRoutes.get('/vote/top_rated', function(req, res) {
-        Project.find()
-        .sort({
-            total_score: -1
-        })
-        .limit(1)
-        .exec(function(err, project){
+        Vote.aggregate([
+            {
+                "$match": {
+                    'project': {
+                        "$eq": mongoose.Types.ObjectId(req.body.project_id)
+                    }
+                }
+            }
+        ], function(err, result) {
             if(err)
                 return errorHandle();
-            else
-                return res.json({
-                    project: project[0]
-                });
+            return res.json({
+                status: 200,
+                project: result
+            });
         });
     });
 };

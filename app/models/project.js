@@ -22,10 +22,6 @@ var ProjectSchema = new Schema({
         type: Array,
         required: true,
         default: []
-    },
-    total_score: {
-        type: Number,
-        default: 0
     }
 });
 
