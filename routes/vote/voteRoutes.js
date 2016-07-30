@@ -185,13 +185,10 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             }
                             checkVote.save();
                         });
-                        if(!req.body.score)
-                            return errorHandle();
                         Project.findOne({
                             project: mongoose.Types.ObjectId(req.body.project_id)
                         }, function(err, project) {
-                            if(!req.body.score)
-                                return errorHandle();
+                            console.log('Total score: '+project.total_score);
                             project.total_score += req.body.score;
                             project.save();
                         });
