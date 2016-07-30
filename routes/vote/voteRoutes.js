@@ -141,7 +141,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             project: mongoose.Types.ObjectId(req.body.project_id)
                         }, function(err, project) {
                             project.total_score = project.total_score + req.body.score;
-                            project.save()
+                            project.save();
                         });
                     });
                 }
@@ -183,7 +183,12 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             }
                             checkVote.save();
                         });
-
+                        Project.findOne({
+                            project: mongoose.Types.ObjectId(req.body.project_id)
+                        }, function(err, project) {
+                            project.total_score = project.total_score + req.body.score;
+                            project.save();
+                        });
                         return res.json({
                             status: 200,
                             success: true,
@@ -212,7 +217,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 return errorHandle();
             else
                 return res.json({
-                    project: project
+                    project: project[0]
                 });
         });
     });
