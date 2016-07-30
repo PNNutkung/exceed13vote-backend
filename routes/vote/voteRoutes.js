@@ -207,6 +207,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             }
         })
         .exec(function(err, vote) {
+            console.log(vote);
             Vote.aggregate()
             .group({
                 _id: null,
@@ -216,7 +217,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 if(err)
                     return errorHandle();
                 console.log(res);
-                console.log(vote.project.project_name);
+                //console.log(vote.project.project_name);
             });
         });
     });
