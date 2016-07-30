@@ -3,7 +3,7 @@ module.exports = (apiRoutes) => {
         return res.json({
             message: 'eXceed vote will be closed in',
             round: 'document',
-            remain_time: new Date("2016-07-29T12:00:00")
+            remain_time: '7/29/2016, 6:00:00 PM'
         });
     });
 };
