@@ -204,7 +204,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                     }
                 },
                 "$group": {
-                    _id: '$votes',
                     total_score: {
                         $sum: '$score'
                     }
