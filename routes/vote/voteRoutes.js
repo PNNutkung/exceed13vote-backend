@@ -197,9 +197,16 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     });
 
     apiRoutes.post('/vote/top_rated', function(req, res) {
-        Vote.find({
+        Vote.findOne({
             project: mongoose.Types.ObjectId(req.body.project_id)
-        }).exec(function(err, vote) {
+        })
+        .populate({
+            path: 'project',
+            populate: {
+                path: 'group'
+            }
+        })
+        .exec(function(err, vote) {
             Vote.aggregate()
             .group({
                 _id: null,
@@ -209,7 +216,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 if(err)
                     return errorHandle();
                 console.log(res);
-                console.log(vote[0].project.project_name);
+                console.log(vote.project.project_name);
             });
         });
     });
