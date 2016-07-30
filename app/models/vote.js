@@ -6,14 +6,17 @@ var User = require('./user');
 var VoteSchema = new Schema({
     vote_user: {
         type: Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        unique: true
     },
     vote_category: {
-        type: String
+        type: String,
+        unique: true
     },
     project: {
         type: Schema.ObjectId,
-        ref: 'Project'
+        ref: 'Project',
+        unique: true
     },
     score: {
         type: Number
