@@ -202,7 +202,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             _id: null,
             total_score: {$sum: '$score'}
         })
-        .select('-id total_score')
         .exec(function(err, res) {
             if(err)
                 return errorHandle();
