@@ -11,6 +11,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
         User.findOne({
             username: tokenUsername
         }, (error, user) => {
+            console.log('hellooooooooooooooooooooooo');
             if (error) return errorHandle(res);
             CheckVote.find({
                     username: user.username
@@ -47,6 +48,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             popular: newCheckVote.popular
                         });
                     }
+                    console.log(checkVote);
                     return res.json({
                         status: 200,
                         success: true,
