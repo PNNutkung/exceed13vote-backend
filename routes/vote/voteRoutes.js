@@ -137,7 +137,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             }
                             checkVote.save();
                             Project.findOne({
-                                project: mongoose.Types.ObjectId(req.body.project_id)
+                                _id: mongoose.Types.ObjectId(req.body.project_id)
                             }, function(err, project) {
                                 project.total_score += req.body.score;
                                 project.save();
@@ -183,7 +183,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             }
                             checkVote.save();
                             Project.findOne({
-                                project: mongoose.Types.ObjectId(req.body.project_id)
+                                _id: mongoose.Types.ObjectId(req.body.project_id)
                             }, function(err, project) {
                                 console.log('Total score: '+project.total_score);
                                 project.total_score += req.body.score;
