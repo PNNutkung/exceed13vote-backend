@@ -216,7 +216,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 if(err)
                     return errorHandle();
                 else {
-                    console.log(result);
+                    console.log(vote.project);
                     return res.json({
                         status: 200,
                         project_name: vote.project.project_name,
