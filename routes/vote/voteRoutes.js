@@ -48,7 +48,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         });
                     }
                     else {
-                        console.log(checkVote);
                         return res.json({
                             status: 200,
                             success: true,
@@ -123,25 +122,25 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                                 message: 'Vote failed.'
                             });
                         }
-                        CheckVote.findOne({
-                            username: user.username,
-                            project: mongoose.Types.ObjectId(req.body.project_id)
-                        }, (err, checkVote) => {
-                            switch (req.body.category) {
-                                case 'best_of_hardware':
-                                    checkVote.best_of_hardware = false;
-                                    break;
-                                case 'best_of_software':
-                                    checkVote.best_of_software = false;
-                                    break;
-                                case 'popular':
-                                    checkVote.popular = false;
-                                    break;
-                            }
-                            checkVote.save();
-                        });
                     });
                 }
+                CheckVote.findOne({
+                    username: user.username,
+                    project: mongoose.Types.ObjectId(req.body.project_id)
+                }, (err, checkVote) => {
+                    switch (req.body.category) {
+                        case 'best_of_hardware':
+                            checkVote.best_of_hardware = false;
+                            break;
+                        case 'best_of_software':
+                            checkVote.best_of_software = false;
+                            break;
+                        case 'popular':
+                            checkVote.popular = false;
+                            break;
+                    }
+                    checkVote.save();
+                });
                 return res.json({
                     status: 200,
                     success: true,
