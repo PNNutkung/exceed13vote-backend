@@ -79,7 +79,7 @@ var decodeUsername = function(headers) {
     return decoded.username;
 };
 
-var errorHandle = (res) => {
+var errorHandle = function(res) {
     return res.json({
         status: 206,
         success: false,

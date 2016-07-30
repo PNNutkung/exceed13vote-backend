@@ -16,11 +16,11 @@ app.use(function(req, res, next) {
   next();
 });
 // Show log on console
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 
 app.use(passport.initialize());
 
-app.get('/', (req, res) => {
+app.get('/', function(req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
 
