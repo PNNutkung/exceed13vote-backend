@@ -203,13 +203,13 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             Vote.aggregate()
             .group({
                 _id: null,
-                project_name: vote[0].project.project_name,
                 total_score: {$sum: '$score'}
             })
             .exec(function(err, res) {
                 if(err)
                     return errorHandle();
                 console.log(res);
+                console.log(project_name: vote[0].project.project_name);
             });
         });
     });
