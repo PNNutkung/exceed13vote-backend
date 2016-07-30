@@ -209,7 +209,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 if(err)
                     return errorHandle();
                 console.log(res);
-                console.log(project_name: vote[0].project.project_name);
+                console.log(vote[0].project.project_name);
             });
         });
     });
