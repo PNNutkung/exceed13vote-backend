@@ -201,20 +201,27 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             project: mongoose.Types.ObjectId(req.body.project_id)
         })
         .populate({
-            path: 'project'
+            path: 'project',
+            populate: {
+                path: 'group'
+            }
         })
         .exec(function(err, vote) {
-            console.log(vote);
             Vote.aggregate()
             .group({
                 _id: null,
                 total_score: {$sum: '$score'}
             })
-            .exec(function(err, res) {
+            .exec(function(err, result) {
                 if(err)
                     return errorHandle();
-                console.log(res);
-                //console.log(vote.project.project_name);
+                else
+                    return res.json({
+                        status: 200,
+                        project_name: vote.project.project_name,
+                        group_name: vote.project.group.group_name,
+                        total_score: result.total_score
+                    });
             });
         });
     });
