@@ -3,7 +3,7 @@ var config = require('../config/database');
 var jwt = require('jwt-simple');
 var User = require('./../app/models/user');
 
-module.exports = (app, passport, express) => {
+module.exports = function(app, passport, express) {
     mongoose.connect(config.database);
     require('../config/passport')(passport);
     // bundle our routes
@@ -22,9 +22,9 @@ module.exports = (app, passport, express) => {
     require('./time/timeRoutes')(apiRoutes);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
-}
+};
 
-var getToken = (headers) => {
+var getToken = function(headers) {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
         if (parted.length === 3 && parted[0] === 'eXceed13vote') {
@@ -40,8 +40,9 @@ var getToken = (headers) => {
 var isAuthenticated = function(req, res, next) {
     var token = getToken(req.headers);
     if (token) {
+        var decoded;
         try {
-            var decoded = jwt.decode(token, config.secret);
+            decoded = jwt.decode(token, config.secret);
         } catch (e) {
             return res.json({
                 status: 201,
@@ -51,7 +52,7 @@ var isAuthenticated = function(req, res, next) {
         }
         User.findOne({
             username: decoded.username
-        }, (error, user) => {
+        }, function(error, user) {
             if (error) throw error;
             if (!user) {
                 return res.json({
@@ -72,7 +73,7 @@ var isAuthenticated = function(req, res, next) {
     }
 };
 
-var decodeUsername = (headers) => {
+var decodeUsername = function(headers) {
     var parted = headers.authorization.split(' ');
     var decoded = jwt.decode(parted[1], config.secret);
     return decoded.username;
