@@ -137,6 +137,8 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             }
                             checkVote.save();
                         });
+                        if(!req.body.score)
+                            return errorHandle();
                         Project.findOne({
                             project: mongoose.Types.ObjectId(req.body.project_id)
                         }, function(err, project) {
