@@ -197,31 +197,20 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     });
 
     apiRoutes.post('/vote/top_rated', function(req, res) {
-        Vote.aggregate([
-            {
-                "$match": {
-                    'project': {
-                        "$eq": mongoose.Types.ObjectId(req.body.project_id)
-                    }
-                },
-                "$group": {
-                    total_score: {
-                        $sum: '$score'
-                    }
-                }
-            }
-        ])
-        .exec(function(err, results) {
-            Project.populate(results, {
-                path: 'project'
-            }, function(err, populateResults) {
-                if(err)
-                    return errorHandle();
+        Vote.aggregate()
+        .group({
+            _id: null,
+            total_score: {$sum: '$score'}
+        })
+        .select('-id total_score')
+        .exec(function(err, res) {
+            if(err)
+                return errorHandle();
+            else
                 return res.json({
                     status: 200,
-                    result: populateResults
+                    total_score: total_score
                 });
-            });
         });
     });
 };
