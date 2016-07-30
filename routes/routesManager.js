@@ -19,7 +19,7 @@ module.exports = (app, passport, express) => {
 
     require('./comment/commentRoutes')(apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle);
 
-    require('./time/timeRoutes')(apiRoutes, errorHandle);
+    require('./time/timeRoutes')(apiRoutes);
     // connect the api routes under /api/*
     app.use('/api', apiRoutes);
 }
