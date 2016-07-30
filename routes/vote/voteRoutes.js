@@ -136,14 +136,12 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                                     break;
                             }
                             checkVote.save();
-                        });
-                        if(!req.body.score)
-                            return errorHandle();
-                        Project.findOne({
-                            project: mongoose.Types.ObjectId(req.body.project_id)
-                        }, function(err, project) {
-                            project.total_score += req.body.score;
-                            project.save();
+                            Project.findOne({
+                                project: mongoose.Types.ObjectId(req.body.project_id)
+                            }, function(err, project) {
+                                project.total_score += req.body.score;
+                                project.save();
+                            });
                         });
                     });
                 }
@@ -184,13 +182,13 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                                     break;
                             }
                             checkVote.save();
-                        });
-                        Project.findOne({
-                            project: mongoose.Types.ObjectId(req.body.project_id)
-                        }, function(err, project) {
-                            console.log('Total score: '+project.total_score);
-                            project.total_score += req.body.score;
-                            project.save();
+                            Project.findOne({
+                                project: mongoose.Types.ObjectId(req.body.project_id)
+                            }, function(err, project) {
+                                console.log('Total score: '+project.total_score);
+                                project.total_score += req.body.score;
+                                project.save();
+                            });
                         });
                         return res.json({
                             status: 200,
