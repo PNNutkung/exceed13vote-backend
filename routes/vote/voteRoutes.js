@@ -201,10 +201,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             project: mongoose.Types.ObjectId(req.body.project_id)
         })
         .populate({
-            path: 'project',
-            populate: {
-                path: 'group'
-            }
+            path: 'project'
         })
         .exec(function(err, vote) {
             console.log(vote);
