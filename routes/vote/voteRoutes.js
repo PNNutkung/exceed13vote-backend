@@ -194,7 +194,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
         });
     });
 
-    apiRoutes.get('/vote/top_rated', function(req, res) {
+    apiRoutes.post('/vote/top_rated', function(req, res) {
         Vote.aggregate([
             {
                 "$match": {
