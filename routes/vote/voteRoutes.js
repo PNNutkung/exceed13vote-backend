@@ -208,7 +208,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             else
                 return res.json({
                     status: 200,
-                    total_score: total_score
+                    total_score: res
                 });
         });
     });
