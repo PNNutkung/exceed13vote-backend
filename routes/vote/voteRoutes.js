@@ -37,14 +37,14 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                                     message: 'Check vote failed.'
                                 });
                             }
-                            return res.json({
-                                status: 200,
-                                success: true,
-                                username: user.username,
-                                best_of_hardware: newCheckVote.best_of_hardware,
-                                best_of_software: newCheckVote.best_of_software,
-                                popular: newCheckVote.popular
-                            });
+                        });
+                        return res.json({
+                            status: 200,
+                            success: true,
+                            username: user.username,
+                            best_of_hardware: newCheckVote.best_of_hardware,
+                            best_of_software: newCheckVote.best_of_software,
+                            popular: newCheckVote.popular
                         });
                     }
                     return res.json({
