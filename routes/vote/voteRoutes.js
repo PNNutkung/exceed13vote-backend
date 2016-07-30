@@ -11,7 +11,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
         User.findOne({
             username: tokenUsername
         }, (error, user) => {
-            console.log('hellooooooooooooooooooooooo');
             if (error) return errorHandle(res);
             CheckVote.find({
                     username: user.username
@@ -25,7 +24,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 })
                 .exec((err, checkVote) => {
                     if (err) return errorHandle(res);
-                    if (checkVote.length === 0) {
+                    else if (checkVote.length === 0) {
                         var newCheckVote = new CheckVote({
                             username: user.username,
                             project: mongoose.Types.ObjectId(req.headers.project_id)
@@ -48,15 +47,17 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             });
                         });
                     }
-                    console.log(checkVote);
-                    return res.json({
-                        status: 200,
-                        success: true,
-                        username: user.username,
-                        best_of_hardware: checkVote[0].best_of_hardware,
-                        best_of_software: checkVote[0].best_of_software,
-                        popular: checkVote[0].popular
-                    });
+                    else {
+                        console.log(checkVote);
+                        return res.json({
+                            status: 200,
+                            success: true,
+                            username: user.username,
+                            best_of_hardware: checkVote[0].best_of_hardware,
+                            best_of_software: checkVote[0].best_of_software,
+                            popular: checkVote[0].popular
+                        });
+                    }
                 });
         });
     });
