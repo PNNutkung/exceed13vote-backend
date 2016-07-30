@@ -137,6 +137,12 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             }
                             checkVote.save();
                         });
+                        Project.findOne({
+                            project: mongoose.Types.ObjectId(req.body.project_id)
+                        }, function(err, project) {
+                            project.total_score = project.total_score + req.body.score;
+                            project.save()
+                        });
                     });
                 }
                 return res.json({
@@ -194,7 +200,23 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             }
         });
     });
-}
+
+    apiRoutes.get('/vote/top_rated', function(req, res) {
+        Project.find()
+        .sort({
+            total_score: -1
+        })
+        .limit(1)
+        .exec(function(err, project){
+            if(err)
+                return errorHandle();
+            else
+                return res.json({
+                    project: project
+                });
+        });
+    });
+};
 
 var categoryCheck = function(req, res, next) {
     switch (req.body.category) {
