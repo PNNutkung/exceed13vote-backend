@@ -219,7 +219,8 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                     console.log(vote.project);
                     return res.json({
                         status: 200,
-                        project_name: vote.project.project_name,
+                        project_name: vote.project.name,
+                        group_name: vote.project.group.group_name,
                         total_score: result[0].total_score
                     });
                 }
