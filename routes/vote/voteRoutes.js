@@ -197,18 +197,30 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
     apiRoutes.post('/vote/top_rated', function(req, res) {
         Vote.aggregate([
             {
+                "$unwind": '$votes',
                 "$match": {
                     'project': {
                         "$eq": mongoose.Types.ObjectId(req.body.project_id)
                     }
+                },
+                "$group": {
+                    _id: '$votes',
+                    total_score: {
+                        $sum: '$score'
+                    }
                 }
             }
-        ], function(err, result) {
-            if(err)
-                return errorHandle();
-            return res.json({
-                status: 200,
-                project: result
+        ])
+        .exec(function(err, results) {
+            Project.populate(results, {
+                path: 'project'
+            }, function(err, populateResults) {
+                if(err)
+                    return errorHandle();
+                return res.json({
+                    status: 200,
+                    result: populateResults
+                });
             });
         });
     });
