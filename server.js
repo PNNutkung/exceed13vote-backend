@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
 
-app.listen(port,"128.199.135.164");
+app.listen(port);
 console.log('eXceed13vote online @ http://localhost:' + port);
 
 require('./routes/routesManager')(app, passport, express);

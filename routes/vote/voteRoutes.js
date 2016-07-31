@@ -227,6 +227,29 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
             });
         });
     });
+
+    apiRoutes.post('/voted/', function(req, res) {
+        var tokenUsername = decodeUsername(req.headers);
+        User.findOne({
+            username: tokenUsername
+        }, function(err, user) {
+            Vote.find({
+                vote_user: mongoose.Types.ObjectId(user._id),
+                project: mongoose.Types.ObjectId(req.body.project_id)
+            })
+            .exec(function(err, votes) {
+                if(err)
+                    return errorHandle();
+                else {
+                    return res.json({
+                        status: 200,
+                        username: user.username,
+                        vote: votes
+                    });
+                }
+            });
+        });
+    });
 };
 
 var categoryCheck = function(req, res, next) {
