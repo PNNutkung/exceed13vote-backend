@@ -90,15 +90,15 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                             group: project[0].group.group_name,
                             average: votes.length === 0 ? 0 : total / votes.length
                         });
-                    })
+                    });
             });
     });
 
-    apiRoutes.post('/vote', isAuthenticated, categoryCheck, (req, res) => {
+    apiRoutes.post('/vote', isAuthenticated, categoryCheck, votedCheck, (req, res) => {
         var tokenUsername = decodeUsername(req.headers);
         User.findOne({
             username: tokenUsername
-        }, (error, user) => {
+        }, function(error, user) {
             if (error) return errorHandle(res);
             if (!user) {
                 return res.json({
@@ -106,7 +106,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                     success: false,
                     message: 'Vote failed, User not found.'
                 });
-            } else if(user.teacer) {
+            } else if(user.teacher) {
                 for(var i = 0; i < 3 ; ++i) {
                     var newVote = new Vote({
                         vote_user: mongoose.Types.ObjectId(user._id),
@@ -127,7 +127,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 CheckVote.findOne({
                     username: user.username,
                     project: mongoose.Types.ObjectId(req.body.project_id)
-                }, (err, checkVote) => {
+                }, function(err, checkVote) {
                     switch (req.body.category) {
                         case 'best_of_hardware':
                             checkVote.best_of_hardware = false;
@@ -154,7 +154,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                         project: mongoose.Types.ObjectId(req.body.project_id),
                         score: req.body.score
                     });
-                    newVote.save((error) => {
+                    newVote.save(function(error) {
                         if (error) {
                             return res.json({
                                 status: 201,
@@ -249,6 +249,39 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 }
             });
         });
+    });
+};
+
+var votedCheck = function(req, res, next) {
+    var isVoted;
+    CheckVote.findOne({
+        username: user.username,
+        project: mongoose.Types.ObjectId(req.body.project_id)
+    }, function (err, checkVote) {
+        switch (req.body.category) {
+            case 'best_of_hardware':
+                isVoted = checkVote.best_of_hardware;
+                break;
+            case 'best_of_software':
+                isVoted = checkVote.best_of_software;
+                break;
+            case 'popular':
+                isVoted = checkVote.popular;
+                break;
+            default:
+                return res.json({
+                    status: 403,
+                    message: 'Forbidden'
+                });
+        }
+        if(!isVoted) {
+            return next();
+        } else {
+            return res.json({
+                status: 200,
+                message: 'You have been voted.'
+            });
+        }
     });
 };
 
