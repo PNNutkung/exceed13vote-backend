@@ -253,35 +253,40 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
 };
 
 var votedCheck = function(req, res, next) {
-    var isVoted;
-    CheckVote.findOne({
-        username: user.username,
-        project: mongoose.Types.ObjectId(req.body.project_id)
-    }, function (err, checkVote) {
-        switch (req.body.category) {
-            case 'best_of_hardware':
-                isVoted = checkVote.best_of_hardware;
-                break;
-            case 'best_of_software':
-                isVoted = checkVote.best_of_software;
-                break;
-            case 'popular':
-                isVoted = checkVote.popular;
-                break;
-            default:
+    var tokenUsername = decodeUsername(req.headers);
+    User.findOne({
+        username: tokenUsername
+    }, function(err, user) {
+        var isVoted;
+        CheckVote.findOne({
+            username: user.username,
+            project: mongoose.Types.ObjectId(req.body.project_id)
+        }, function (err, checkVote) {
+            switch (req.body.category) {
+                case 'best_of_hardware':
+                    isVoted = checkVote.best_of_hardware;
+                    break;
+                case 'best_of_software':
+                    isVoted = checkVote.best_of_software;
+                    break;
+                case 'popular':
+                    isVoted = checkVote.popular;
+                    break;
+                default:
+                    return res.json({
+                        status: 403,
+                        message: 'Forbidden'
+                    });
+            }
+            if(!isVoted) {
+                return next();
+            } else {
                 return res.json({
-                    status: 403,
-                    message: 'Forbidden'
+                    status: 200,
+                    message: 'You have been voted.'
                 });
-        }
-        if(!isVoted) {
-            return next();
-        } else {
-            return res.json({
-                status: 200,
-                message: 'You have been voted.'
-            });
-        }
+            }
+        });
     });
 };
 
