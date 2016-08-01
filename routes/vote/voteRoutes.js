@@ -255,7 +255,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
 };
 
 var votedCheck = function(req, res, next) {
-    var tokenUsername = decodeUsername(req.headers);
+    var tokenUsername = decode(req.headers);
     User.findOne({
         username: tokenUsername
     }, function(err, user) {
