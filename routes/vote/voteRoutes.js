@@ -5,6 +5,7 @@ var CheckVote = require('./../../app/models/checkVote');
 var config = require('./../../config/database');
 var jwt = require('jwt-simple');
 var decode;
+var mongoose = require('mongoose');
 
 module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHandle) => {
     decode = decodeUsername;
