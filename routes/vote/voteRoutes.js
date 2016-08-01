@@ -265,6 +265,10 @@ var votedCheck = function(req, res, next) {
             username: user.username,
             project: mongoose.Types.ObjectId(req.body.project_id)
         }, function (err, checkVote) {
+            if(err) return res.json({
+                status: 200,
+                message: 'Something wrong'
+            });
             switch (req.body.category) {
                 case 'best_of_hardware':
                     isVoted = checkVote.best_of_hardware;
@@ -281,7 +285,7 @@ var votedCheck = function(req, res, next) {
                         message: 'Forbidden'
                     });
             }
-            if(!isVoted) {
+            if(isVoted) {
                 return next();
             } else {
                 return res.json({
