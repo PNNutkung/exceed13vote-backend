@@ -219,7 +219,6 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                 if(err)
                     return errorHandle();
                 else {
-                    console.log(vote.project);
                     return res.json({
                         status: 200,
                         project_name: vote.project.name,
@@ -260,16 +259,25 @@ var votedCheck = function(req, res, next) {
     User.findOne({
         username: tokenUsername
     }, function(err, user) {
-        var isVoted;
         CheckVote.findOne({
             username: user.username,
             project: mongoose.Types.ObjectId(req.body.project_id)
         }, function (err, checkVote) {
-            if(err) return res.json({
-                status: 200,
-                message: 'Something wrong'
-            });
-            switch (req.body.category) {
+            if(!checkVote){
+                return res.json({
+                    status: 403,
+                    message: "Vote Error!"
+                });
+            }
+            else if(err){
+                return res.json({
+                    status: 200,
+                    message: 'Something wrong'
+                });
+            }
+            else{
+                var isVoted = false;
+                switch (req.body.category) {
                 case 'best_of_hardware':
                     isVoted = checkVote.best_of_hardware;
                     break;
@@ -292,6 +300,7 @@ var votedCheck = function(req, res, next) {
                     status: 200,
                     message: 'You have been voted.'
                 });
+            }
             }
         });
     });

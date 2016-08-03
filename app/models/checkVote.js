@@ -5,7 +5,6 @@ var Project = require('./project');
 var CheckVoteSchema = new Schema({
     username: {
         type: String,
-        unique: true,
         required: true
     },
     project: {

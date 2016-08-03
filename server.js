@@ -3,7 +3,7 @@ var passport = require('passport');
 var bodyParser = require('body-parser');
 var app = express();
 var morgan = require('morgan');
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 18080;
 
 app.use(bodyParser.urlencoded({
     extended: false
