@@ -4,7 +4,7 @@ module.exports = function(apiRoutes) {
             status: 200,
             message: 'eXceed vote will be closed in',
             round: 'document',
-            remain_time: '7/30/2016, 6:00:00 PM'
+            remain_time: '8/4/2016, 5:45:00 PM'
         });
     });
 };
