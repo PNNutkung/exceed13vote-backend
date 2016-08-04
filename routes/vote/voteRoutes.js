@@ -150,7 +150,7 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                     message: 'Vote successfully.'
                 });
             } else {
-                if(req.body.score > -1) {
+                if(req.body.score >= 0 && req.body.score <= 10) {
                     var newVote = new Vote({
                         vote_user: mongoose.Types.ObjectId(user._id),
                         vote_category: req.body.category,
