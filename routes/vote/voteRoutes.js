@@ -144,11 +144,19 @@ module.exports = (apiRoutes, mongoose, isAuthenticated, decodeUsername, errorHan
                     }
                     checkVote.save();
                 });
+                if(req.body.score >= 0 && req.body.score <= 10){
                 return res.json({
                     status: 200,
                     success: true,
                     message: 'Vote successfully.'
                 });
+                } else {
+                    return res.json({
+                        status: 403,
+                        success: false,
+                        message: 'Your vote score can be only 0 - 10 point(s).'
+                    });
+                }
             } else {
                 if(req.body.score >= 0 && req.body.score <= 10) {
                     var newVote = new Vote({
